@@ -1,124 +1,724 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../img/favicon.ico">
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
+    
+    
+      
         <title>手把手教你从单片机移植驱动到ARMLinux上 - jackeyt wiki</title>
-        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <script src="../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
-    </head>
-
-    <body>
-
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-
-                <!-- Collapsed navigation -->
-                <div class="navbar-header">
-                    <!-- Expander button -->
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="..">jackeyt wiki</a>
-                </div>
-
-                <!-- Expanded navigation -->
-                <div class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li >
-                                <a href="..">Welcome to MkDocs</a>
-                            </li>
-                            <li >
-                                <a href="../ARMLinux设备树/">ARMLinux设备树</a>
-                            </li>
-                            <li >
-                                <a href="../SUMMARY/">SUMMARY</a>
-                            </li>
-                            <li >
-                                <a href="../[史上最详细]VSCode搭建ARMLinuxMakefile工程IDE（C-C++）/">VS Code搭建ARM Linux Makefile工程IDE（C/C++）[史上最详细]</a>
-                            </li>
-                            <li >
-                                <a href="../三种总线的横向对比表/">三种总线的横向对比表</a>
-                            </li>
-                            <li class="active">
-                                <a href="./">手把手教你从单片机移植驱动到ARMLinux上</a>
-                            </li>
-                            <li >
-                                <a href="../驱动第一天---驱动基础/">驱动第一天---驱动基础 #</a>
-                            </li>
-                            <li >
-                                <a href="../驱动第三天---总线/">驱动第三天---总线 #</a>
-                            </li>
-                            <li >
-                                <a href="../驱动第二天---中断/">驱动第二天---中断 #</a>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
-                            <li >
-                                <a rel="next" href="../三种总线的横向对比表/">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li >
-                                <a rel="prev" href="../驱动第一天---驱动基础/">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.0284f74d.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#1" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="jackeyt wiki" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              jackeyt wiki
+            </span>
+            <span class="md-header-nav__topic">
+              
+                手把手教你从单片机移植驱动到ARMLinux上
+              
+            </span>
+          
         </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="jackeyt wiki" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    jackeyt wiki
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
 
-        <div class="container">
-                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#1">1. 写在前面</a></li>
-        <li class="main "><a href="#2">2. 硬件环境</a></li>
-            <li><a href="#21">2.1 主控环境</a></li>
-            <li><a href="#22">2.2 外设环境</a></li>
-        <li class="main "><a href="#3">3.硬件接线</a></li>
-            <li><a href="#31-stm32">3.1 STM32接线</a></li>
-            <li><a href="#32-rk3399">3.2 RK3399接线</a></li>
-        <li class="main "><a href="#4">4. 移植原理</a></li>
-        <li class="main "><a href="#5">5.  移植操作</a></li>
-            <li><a href="#51-gpio">5.1  从设备树中传入GPIO口定义</a></li>
-            <li><a href="#52-stm32">5.2  替换STM32中的接口</a></li>
-        <li class="main "><a href="#6">6. 加入到字符设备驱动框架</a></li>
-        <li class="main "><a href="#7">7. 测试代码</a></li>
-        <li class="main "><a href="#8">8.  测试效果</a></li>
-        <li class="main "><a href="#9">9.  代码开源地址</a></li>
+
+  <li class="md-nav__item">
+    <a href=".." title="Welcome to MkDocs" class="md-nav__link">
+      Welcome to MkDocs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../ARMLinux设备树/" title="ARMLinux设备树" class="md-nav__link">
+      ARMLinux设备树
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../SUMMARY/" title="SUMMARY" class="md-nav__link">
+      SUMMARY
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../[史上最详细]VSCode搭建ARMLinuxMakefile工程IDE（C-C++）/" title="VS Code搭建ARM Linux Makefile工程IDE（C/C++）[史上最详细]" class="md-nav__link">
+      VS Code搭建ARM Linux Makefile工程IDE（C/C++）[史上最详细]
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../三种总线的横向对比表/" title="三种总线的横向对比表" class="md-nav__link">
+      三种总线的横向对比表
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        手把手教你从单片机移植驱动到ARMLinux上
+      </label>
+    
+    <a href="./" title="手把手教你从单片机移植驱动到ARMLinux上" class="md-nav__link md-nav__link--active">
+      手把手教你从单片机移植驱动到ARMLinux上
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" title="1. 写在前面" class="md-nav__link">
+    1. 写在前面
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" title="2. 硬件环境" class="md-nav__link">
+    2. 硬件环境
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" title="2.1 主控环境" class="md-nav__link">
+    2.1 主控环境
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" title="2.2 外设环境" class="md-nav__link">
+    2.2 外设环境
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" title="3.硬件接线" class="md-nav__link">
+    3.硬件接线
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-stm32" title="3.1 STM32接线" class="md-nav__link">
+    3.1 STM32接线
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-rk3399" title="3.2 RK3399接线" class="md-nav__link">
+    3.2 RK3399接线
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" title="4. 移植原理" class="md-nav__link">
+    4. 移植原理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" title="5.  移植操作" class="md-nav__link">
+    5.  移植操作
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-gpio" title="5.1  从设备树中传入GPIO口定义" class="md-nav__link">
+    5.1  从设备树中传入GPIO口定义
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-stm32" title="5.2  替换STM32中的接口" class="md-nav__link">
+    5.2  替换STM32中的接口
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521" title="5.2.1  替换宏定义接口" class="md-nav__link">
+    5.2.1  替换宏定义接口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#522" title="5.2.2  替换延时接口" class="md-nav__link">
+    5.2.2  替换延时接口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#523" title="5.2.3  操作函数接口替换" class="md-nav__link">
+    5.2.3  操作函数接口替换
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5231-void-dht11_io_outvoid" title="5.2.3.1 void DHT11_IO_OUT(void) ;" class="md-nav__link">
+    5.2.3.1 void DHT11_IO_OUT(void) ;
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5232-void-dht11_io_invoid" title="5.2.3.2 void DHT11_IO_IN(void) ;" class="md-nav__link">
+    5.2.3.2 void DHT11_IO_IN(void) ;
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5233-u8-dht11_read_dqvoid" title="5.2.3.3 u8 DHT11_Read_DQ(void);" class="md-nav__link">
+    5.2.3.3 u8 DHT11_Read_DQ(void);
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5234" title="5.2.3.4  总结对比" class="md-nav__link">
+    5.2.3.4  总结对比
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5235" title="5.2.3.5  其他直接无缝使用的的代码" class="md-nav__link">
+    5.2.3.5  其他直接无缝使用的的代码
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" title="6. 加入到字符设备驱动框架" class="md-nav__link">
+    6. 加入到字符设备驱动框架
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" title="7. 测试代码" class="md-nav__link">
+    7. 测试代码
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" title="8.  测试效果" class="md-nav__link">
+    8.  测试效果
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" title="9.  代码开源地址" class="md-nav__link">
+    9.  代码开源地址
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
     </ul>
-</div></div>
-                <div class="col-md-9" role="main">
+  
+</nav>
+    
+  </li>
 
-<div class="toc">
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../驱动第一天---驱动基础/" title="驱动第一天---驱动基础 #" class="md-nav__link">
+      驱动第一天---驱动基础 #
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../驱动第三天---总线/" title="驱动第三天---总线 #" class="md-nav__link">
+      驱动第三天---总线 #
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../驱动第二天---中断/" title="驱动第二天---中断 #" class="md-nav__link">
+      驱动第二天---中断 #
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" title="1. 写在前面" class="md-nav__link">
+    1. 写在前面
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" title="2. 硬件环境" class="md-nav__link">
+    2. 硬件环境
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" title="2.1 主控环境" class="md-nav__link">
+    2.1 主控环境
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" title="2.2 外设环境" class="md-nav__link">
+    2.2 外设环境
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" title="3.硬件接线" class="md-nav__link">
+    3.硬件接线
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-stm32" title="3.1 STM32接线" class="md-nav__link">
+    3.1 STM32接线
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-rk3399" title="3.2 RK3399接线" class="md-nav__link">
+    3.2 RK3399接线
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" title="4. 移植原理" class="md-nav__link">
+    4. 移植原理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" title="5.  移植操作" class="md-nav__link">
+    5.  移植操作
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-gpio" title="5.1  从设备树中传入GPIO口定义" class="md-nav__link">
+    5.1  从设备树中传入GPIO口定义
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-stm32" title="5.2  替换STM32中的接口" class="md-nav__link">
+    5.2  替换STM32中的接口
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521" title="5.2.1  替换宏定义接口" class="md-nav__link">
+    5.2.1  替换宏定义接口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#522" title="5.2.2  替换延时接口" class="md-nav__link">
+    5.2.2  替换延时接口
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#523" title="5.2.3  操作函数接口替换" class="md-nav__link">
+    5.2.3  操作函数接口替换
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5231-void-dht11_io_outvoid" title="5.2.3.1 void DHT11_IO_OUT(void) ;" class="md-nav__link">
+    5.2.3.1 void DHT11_IO_OUT(void) ;
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5232-void-dht11_io_invoid" title="5.2.3.2 void DHT11_IO_IN(void) ;" class="md-nav__link">
+    5.2.3.2 void DHT11_IO_IN(void) ;
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5233-u8-dht11_read_dqvoid" title="5.2.3.3 u8 DHT11_Read_DQ(void);" class="md-nav__link">
+    5.2.3.3 u8 DHT11_Read_DQ(void);
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5234" title="5.2.3.4  总结对比" class="md-nav__link">
+    5.2.3.4  总结对比
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5235" title="5.2.3.5  其他直接无缝使用的的代码" class="md-nav__link">
+    5.2.3.5  其他直接无缝使用的的代码
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" title="6. 加入到字符设备驱动框架" class="md-nav__link">
+    6. 加入到字符设备驱动框架
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" title="7. 测试代码" class="md-nav__link">
+    7. 测试代码
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" title="8.  测试效果" class="md-nav__link">
+    8.  测试效果
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" title="9.  代码开源地址" class="md-nav__link">
+    9.  代码开源地址
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>手把手教你从单片机移植驱动到ARMLinux上</h1>
+                
+                <div class="toc">
 <ul>
 <li><a href="#1">1. 写在前面</a></li>
 <li><a href="#2">2. 硬件环境</a><ul>
@@ -578,83 +1178,80 @@ int main ( void )
 <h2 id="8"><strong>8.  测试效果</strong></h2>
 <p><img alt="" src="../images/QQ图片20181025114724.png" /></p>
 <h2 id="9"><strong>9.  代码开源地址</strong></h2>
-<p><a href="https://github.com/jackeyt/DHT11-for-RK3399-driver">Github</a></p></div>
-        </div>
+<p><a href="https://github.com/jackeyt/DHT11-for-RK3399-driver">Github</a></p>
+                
+                  
+                
+              
+              
+                
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>
-            var base_url = "..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../js/base.js" defer></script>
-        <script src="../search/main.js" defer></script>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
+              
+            </article>
+          </div>
         </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../三种总线的横向对比表/" title="三种总线的横向对比表" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                三种总线的横向对比表
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../驱动第一天---驱动基础/" title="驱动第一天---驱动基础 #" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                驱动第一天---驱动基础 #
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
     </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
     </div>
-</div>
-
-    </body>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.245445c6.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+  </body>
 </html>
