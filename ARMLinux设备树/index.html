@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>ARMLinux设备树 - jackeyt wiki</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">jackeyt wiki</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Welcome to MkDocs</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">ARMLinux设备树</a>
+                            </li>
+                            <li >
+                                <a href="../SUMMARY/">SUMMARY</a>
+                            </li>
+                            <li >
+                                <a href="../[史上最详细]VSCode搭建ARMLinuxMakefile工程IDE（C-C++）/">VS Code搭建ARM Linux Makefile工程IDE（C/C++）[史上最详细]</a>
+                            </li>
+                            <li >
+                                <a href="../三种总线的横向对比表/">三种总线的横向对比表</a>
+                            </li>
+                            <li >
+                                <a href="../手把手教你从单片机移植驱动到ARMLinux上/">手把手教你从单片机移植驱动到ARMLinux上</a>
+                            </li>
+                            <li >
+                                <a href="../驱动第一天---驱动基础/">驱动第一天---驱动基础 #</a>
+                            </li>
+                            <li >
+                                <a href="../驱动第三天---总线/">驱动第三天---总线 #</a>
+                            </li>
+                            <li >
+                                <a href="../驱动第二天---中断/">驱动第二天---中断 #</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="..">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../SUMMARY/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#1-linux">1. Linux设备树的起源</a></li>
+        <li class="main "><a href="#2-linux">2. Linux设备树的常见概念</a></li>
+            <li><a href="#21-dtc-device-tree-compiler">2.1快速编译设备树---DTC (device tree compiler)</a></li>
+            <li><a href="#22-open-firmware-device-tree">2.2 Open Firmware Device Tree 开发固件设备树</a></li>
+        <li class="main "><a href="#3">3 设备树的语法</a></li>
+        <li class="main "><a href="#address-cellsaddress-siz">address-cells和#address-siz属性</a></li>
+            <li><a href="#31-node">3.1 节点node</a></li>
+            <li><a href="#32-property">3.2 属性property</a></li>
+        <li class="main "><a href="#address-cells-1-address1">address-cells = &lt;1&gt; 表示address字段的长度的为1</a></li>
+        <li class="main "><a href="#size-cells-1-length1">size-cells = &lt;1&gt;;  表示length字段的长度为1</a></li>
+        <li class="main "><a href="#address-cells-1-32">address-cells = &lt;1&gt;; 基地址、片选号等绝对起始地址所占字长（32位）</a></li>
+        <li class="main "><a href="#size-cells-1-32">size-cells = &lt;1&gt;;  长度所占字长（32位）</a></li>
+        <li class="main "><a href="#address-cells-1size-cells-0-reg-uint32-cpu-0-1cpu-size-cells-0-cpu">address-cells 设置为 1，#size-cells 设置为 0。这意味着子节点的 reg 值是一个单一的 uint32，这是一个不包含大小字段的地址，为这两个 cpu 分配的地址是 0 和 1。cpu 节点的 #size-cells 为 0 是因为只为每个 cpu 分配一个单独的地址。</a></li>
+            <li><a href="#323-reg">3.2.3  常见属性--reg属性</a></li>
+            <li><a href="#324-">3.2.4  常见属性--中断信息</a></li>
+        <li class="main "><a href="#interrupt-cells-cell-address-cells-size-cells">interrupt-cells - 这是一个中断控制器节点的属性。它声明了该中断控制器的中断指示符中 cell 的个数（类似于 #address-cells 和 #size-cells）</a></li>
+            <li><a href="#4">4 练习时间</a></li>
+            <li><a href="#5-of-api">5 常用OF API</a></li>
+            <li><a href="#6-of-api">6 通过OF API查找相应的节点、属性</a></li>
+            <li><a href="#7-platform">7 platform驱动的变更</a></li>
+            <li><a href="#_2">参考链接：</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<div class="toc">
+<ul>
+<li><a href="#1-linux">1. Linux设备树的起源</a></li>
+<li><a href="#2-linux">2. Linux设备树的常见概念</a><ul>
+<li><a href="#21-dtc-device-tree-compiler">2.1快速编译设备树---DTC (device tree compiler)</a></li>
+<li><a href="#22-open-firmware-device-tree">2.2 Open Firmware Device Tree 开发固件设备树</a></li>
+</ul>
+</li>
+<li><a href="#3">3 设备树的语法</a></li>
+<li><a href="#address-cellsaddress-siz">address-cells和#address-siz属性</a><ul>
+<li><a href="#31-node">3.1 节点node</a></li>
+<li><a href="#32-property">3.2 属性property</a><ul>
+<li><a href="#321-compatible">3.2.1  常见属性--compatible属性</a></li>
+<li><a href="#322-address-cellssize-cells">3.2.2  常见属性--#address-cells和#size-cells</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#address-cells-1-address1">address-cells = &lt;1&gt; 表示address字段的长度的为1</a></li>
+<li><a href="#size-cells-1-length1">size-cells = &lt;1&gt;;  表示length字段的长度为1</a></li>
+<li><a href="#address-cells-1-32">address-cells = &lt;1&gt;; 基地址、片选号等绝对起始地址所占字长（32位）</a></li>
+<li><a href="#size-cells-1-32">size-cells = &lt;1&gt;;  长度所占字长（32位）</a></li>
+<li><a href="#address-cells-1size-cells-0-reg-uint32-cpu-0-1cpu-size-cells-0-cpu">address-cells 设置为 1，#size-cells 设置为 0。这意味着子节点的 reg 值是一个单一的 uint32，这是一个不包含大小字段的地址，为这两个 cpu 分配的地址是 0 和 1。cpu 节点的 #size-cells 为 0 是因为只为每个 cpu 分配一个单独的地址。</a><ul>
+<li><a href="#323-reg">3.2.3  常见属性--reg属性</a></li>
+<li><a href="#324-">3.2.4  常见属性--中断信息</a></li>
+</ul>
+</li>
+<li><a href="#interrupt-cells-cell-address-cells-size-cells">interrupt-cells - 这是一个中断控制器节点的属性。它声明了该中断控制器的中断指示符中 cell 的个数（类似于 #address-cells 和 #size-cells）</a><ul>
+<li><a href="#4">4 练习时间</a><ul>
+<li><a href="#_1">参考答案</a></li>
+</ul>
+</li>
+<li><a href="#5-of-api">5 常用OF API</a></li>
+<li><a href="#6-of-api">6 通过OF API查找相应的节点、属性</a><ul>
+<li><a href="#61">6.1 查找到相关的设备树节点</a></li>
+<li><a href="#62">6.2 从查找到的节点里面分析该节点的属性</a><ul>
+<li><a href="#621-compatible">6.2.1 查找compatible属性</a></li>
+<li><a href="#622-compatible">6.2.2 查找compatible属性的另一种方法</a></li>
+</ul>
+</li>
+<li><a href="#62_1">6.2 从查找到的节点里面分析该节点的数组属性</a></li>
+<li><a href="#62_2">6.2 从查找到的节点里面分析该节点的字符串数组属性</a></li>
+<li><a href="#63">6.3 从查找到的节点里面分析该节点的中断属性</a></li>
+</ul>
+</li>
+<li><a href="#7-platform">7 platform驱动的变更</a></li>
+<li><a href="#_2">参考链接：</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="1-linux">1. Linux设备树的起源</h2>
+<blockquote>
+<p>在Linux 2.6中，arch/arm/plat-xxx和arch/arm/mach-xxx中充斥着大量的垃圾代码，相当多数的代码只是在描述板级细节，而这些板级细节对于内核来讲，不过是垃圾，如板上的platform设备、resource、i2c_board_info、spi_board_info以及各种硬件platform_data。常见的s3c2410、s3c6410等板级目录，代码量在数万行。</p>
+</blockquote>
+<p><img alt="" src="../images/图片1.png" /></p>
+<p>Linus Torvalds对于此种情况大发雷霆，在2011年的ARM Linux邮件列表宣称this whole ARM thing is a f*cking pain in the ass”</p>
+<p>所以Linux开发社区就开始整改，设备树最早用于PowerPC等其他体系架构，ARM架构开发社区就开始采用设备树来描述设备的信息</p>
+<h2 id="2-linux">2. Linux设备树的常见概念</h2>
+<p>DT : Device Tree
+FDT : Flattened DeviceTree
+OF : Open Firmware
+DTS : Device Tree Source
+DTSI : Device Tree Source Include
+DTB : Device Tree Blob
+DTC : Device Tree Compiler</p>
+<h3 id="21-dtc-device-tree-compiler">2.1快速编译设备树---DTC (device tree compiler)</h3>
+<ul>
+<li>将.dts编译为.dtb的工具</li>
+<li>DTC的源代码位于内核的scripts/dtc目录，在Linux内核使能了Device Tree的情况下，编译内核的时候主机工具dtc会被编译出来</li>
+<li>在Linux内核的arch/arm/boot/dts/Makefile中，描述了当某种SoC被选中后，哪些.dtb文件会被编译出来，如与EXYNOS对应的.dtb包括：</li>
+</ul>
+<pre><code>dtb-$(CONFIG_ARCH_EXYNOS) += exynos4210-origen.dtb \
+    exynos4210-smdkv310.dtb \
+            exynos4412-origen.dtb \
+</code></pre>
+
+<ul>
+<li>
+<p>我们可以单独编译Device Tree文件。当我们在Linux内核下运行make dtbs时，若我们之前选择了ARCH_EXYNOS，上述.dtb都会由对应的.dts编译出来</p>
+</li>
+<li>
+<p>DTC除了可以编译.dts文件以外，其实也可以“反汇编”.dtb文件为.dts文件，其指令格式为：
+    <code>./scripts/dtc/dtc -I dtb -O dts -o xxx.dts arch/arm/boot/dts/xxx.dtb</code></p>
+</li>
+</ul>
+<h3 id="22-open-firmware-device-tree">2.2 Open Firmware Device Tree 开发固件设备树</h3>
+<ul>
+<li>
+<p>1，Device Tree可以描述的信息包括CPU的数量和类别、内存基地址和大小、总线和桥、外设连接、中断控制器和中断使用情况、GPIO控制器和GPIO使用情况、Clock控制器和Clock使用情况。</p>
+</li>
+<li>
+<p>2，设备树信息被保存在一个ASCII 文本文件中，适合人类的阅读习惯，类似于xml文件，  在ARM Linux中，一个.dts文件对应一个ARM的machine放置在内核的<code>arch/arm/boot/dts/</code></p>
+</li>
+<li>
+<p>3，设备树是一种数据结构，用于描述设备信息的语言，具体而言，是用于操作系统中描述硬件，使得不需要对设备的信息进行硬编码(hard code)</p>
+</li>
+<li>
+<p>4,  Device Tree由一系列被命名的结点（node）和属性（property）组成，而结点本身可包含子结点。所谓属性，其实就是成对出现的name和value</p>
+</li>
+<li>
+<p>5,  设备树源文件dts被编译成dtb二进制文件，在bootloader运行时传递给操作系统，操作系统对其进行解析展开(Flattened)，从而产生一个硬件设备的拓扑图有了这个拓扑图，在编程的过程中可以直接通过系统提供的接口获取到设备树中的节点和属性信息</p>
+</li>
+</ul>
+<h2 id="3">3 设备树的语法</h2>
+<ul>
+<li>节点</li>
+<li>属性</li>
+<li>根节点</li>
+<li>compatible属性</li>
+<li>reg属性</li>
+<li>
+<h1 id="address-cellsaddress-siz">address-cells和#address-siz属性</h1>
+</li>
+<li>中断信息属性--interrupts和interrupts</li>
+</ul>
+<h3 id="31-node">3.1 节点node</h3>
+<ul>
+<li>
+<p>节点名称：每个节点必须有一个“&lt;名称&gt;[@&lt;设备地址&gt;]”形式的名字：
+    &lt;名称&gt; 就是一个不超过31位的简单 ascii 字符串，节点的命名应该根据它所体现的是什么样的设备。比如一个 3com 以太网适配器的节点就应该命名为ethernet，而不应该是 3com509。</p>
+</li>
+<li>
+<p>&lt;设备地址&gt;用来访问该设备的主地址，并且该地址也在节点的 reg 属性中列出，同级节点命名必须是唯一的，但只要地址不同，多个节点也可以使用一样的通用名称，当然设备地址也是可选的，可以有也可以没有</p>
+</li>
+<li>
+<p>树中每个表示一个设备的节点都需要一个 compatible 属性</p>
+</li>
+</ul>
+<h3 id="32-property">3.2 属性property</h3>
+<ul>
+<li>
+<p>简单的键－值对，它的值可以为空或者包含一个任意字节流。虽然数据类型并没有编码进数据结构，但在设备树源文件中任有几个基本的数据表示形式    :</p>
+<ul>
+<li>文本字符串（无结束符）可以用双引号表示：
+        <code>string-property = "a string"</code></li>
+<li>Cells是 32 位无符号整数，用尖括号限定：
+        <code>cell-property = &lt;0xbeef 123 0xabcd1234&gt;</code></li>
+<li>二进制数据用方括号限定：
+    <code>binary-property = [01 23 45 67];</code></li>
+<li>不同表示形式的数据可以使用逗号连在一起：
+        <code>mixed-property = "a string", [01 23 45 67], &lt;0x12345678&gt;;</code></li>
+<li>逗号也可用于创建字符串列表：
+        <code>string-list = "red fish", "blue fish";</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="321-compatible">3.2.1  常见属性--compatible属性</h4>
+<ul>
+<li>
+<p>指定了系统的名称，是一个字符串的列表，实际在代码中可以用于进行匹配，当前你选择的是哪个机器，它包含了一个“&lt;制造商&gt;,&lt;型号&gt;”形式的字符串。重要的是要指定一个确切的设备，并且包括制造商的名子，以避免命名空间冲突，</p>
+</li>
+<li>
+<p>不要使用带通配符的 compatible 值，比如“fsl,mpc83xx-uart”或类似情况</p>
+</li>
+</ul>
+<pre><code>/ {
+        compatible = &quot;acme,coyotes-revenge&quot;;
+};
+</code></pre>
+
+<h4 id="322-address-cellssize-cells">3.2.2  常见属性--#address-cells和#size-cells</h4>
+<ul>
+<li>
+<h1 id="address-cells-1-address1">address-cells = &lt;1&gt; 表示address字段的长度的为1</h1>
+</li>
+<li>
+<h1 id="size-cells-1-length1">size-cells = &lt;1&gt;;  表示length字段的长度为1</h1>
+</li>
+</ul>
+<pre><code>external-bus {  
+    #address-cells = &lt;2&gt;  
+    #size-cells = &lt;1&gt;;  
+
+    ethernet@0,0 {  
+        compatible = &quot;smc,smc91c111&quot;;  
+        reg = &lt;0 0 0x1000&gt;;   // 地址占两个cells， 长度占1个cells
+        nterrupts = &lt; 5 2 &gt;;  
+     };  
+}
+</code></pre>
+
+<h1 id="address-cells-1-32">address-cells = &lt;1&gt;; 基地址、片选号等绝对起始地址所占字长（32位）</h1>
+<h1 id="size-cells-1-32">size-cells = &lt;1&gt;;  长度所占字长（32位）</h1>
+<p>例子：</p>
+<pre><code>cpus {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;0&gt;;
+        cpu@0 {
+            compatible = &quot;arm,cortex-a9&quot;;
+            reg = &lt;0&gt;;
+        };
+        cpu@1 {
+            compatible = &quot;arm,cortex-a9&quot;;
+            reg = &lt;1&gt;;
+        };
+    };
+</code></pre>
+
+<blockquote>
+<h1 id="address-cells-1size-cells-0-reg-uint32-cpu-0-1cpu-size-cells-0-cpu">address-cells 设置为 1，#size-cells 设置为 0。这意味着子节点的 reg 值是一个单一的 uint32，这是一个不包含大小字段的地址，为这两个 cpu 分配的地址是 0 和 1。cpu 节点的 #size-cells 为 0 是因为只为每个 cpu 分配一个单独的地址。</h1>
+</blockquote>
+<h4 id="323-reg">3.2.3  常见属性--reg属性</h4>
+<p>reg的组织形式为reg = <address1 length1 [address2 length2] [address3 length3] ... >
+其中的每一组address length表明了设备使用的一个地址范围
+/ {<br />
+    compatible = "acme,coyotes-revenge";<br />
+    #address-cells = &lt;1&gt;;<br />
+    #size-cells = &lt;1&gt;;  </p>
+<pre><code>serial@101f2000 {  
+        compatible = "arm,pl011";  
+        reg = &lt;0x101f2000 0x1000 &gt;;  
+        interrupts = &lt; 2 0 &gt;;  
+    };
+</code></pre>
+<p>｝</p>
+<h4 id="324-">3.2.4  常见属性--中断信息</h4>
+<ul>
+<li>
+<p>描述中断连接需要四个属性：</p>
+<ul>
+<li>
+<p>interrupt-controller - 一个空的属性定义该节点作为一个接收中断信号的设备</p>
+</li>
+<li>
+<h1 id="interrupt-cells-cell-address-cells-size-cells">interrupt-cells - 这是一个中断控制器节点的属性。它声明了该中断控制器的中断指示符中 cell 的个数（类似于 #address-cells 和 #size-cells）</h1>
+</li>
+<li>
+<p>interrupt-parent - 这是一个设备节点的属性，包含一个指向该设备连接的中断控制器的 phandle(指向或者可以引用&amp;)那些没有 interrupt-parent 的节点则从它们的父节点中继承该属性。</p>
+</li>
+<li>interrupts - 一个设备节点属性，包含一个中断指示符的列表，对应于该设备上的每个中断输出信号</li>
+</ul>
+</li>
+<li>
+<p>代码举例：</p>
+</li>
+</ul>
+<pre><code>/ {
+    compatible = &quot;acme,coyotes-revenge&quot;;
+    #address-cells = &lt;1&gt;;
+    #size-cells = &lt;1&gt;;
+    interrupt-parent = &lt;&amp;intc&gt;;
+
+    serial@101f0000 {
+        compatible = &quot;arm,pl011&quot;;
+        reg = &lt;0x101f0000 0x1000 &gt;;
+        interrupts = &lt; 1 0 &gt;;
+     };
+
+     intc: interrupt-controller@10140000 {
+        compatible = &quot;arm,pl190&quot;;
+        reg = &lt;0x10140000 0x1000 &gt;;
+        interrupt-controller;
+        #interrupt-cells = &lt;2&gt;;
+                  };
+｝
+</code></pre>
+
+<p>对于arm架构，标志为具体含义</p>
+<pre><code>Documentation/devicetree/bindings/arm/gic.txt
+    The 1st cell is the interrupt type; 
+                                 0 for SPI interrupts, 
+                                 1 for PPI 
+                                 02   interrupts.  
+    The 2nd cell contains the interrupt number for the interrupt type.
+        SPI interrupts are in the range [0-987].  
+        PPI interrupts are in the 06   range [0-15].  
+    The 3rd cell is the flags, encoded as follows: 
+            bits[3:0] trigger type and level flags.  
+            10                 1 = low-to-high edge triggered  
+            11                 2 = high-to-low edge triggered  
+            12                 4 = active high level-sensitive  
+            13                 8 = active low level-sensitive  
+</code></pre>
+
+<h2 id="4">4 练习时间</h2>
+<p>写一个设备节点：已知#address-cells = &lt;1&gt; #size-cells = &lt;1&gt;;<br />
+1、节点名字test_nod
+2、有以下属性：    2.1、compatible 属性取 test,farsight
+        2.2、reg 属性取地址 0x11000C40  0x11000CE0   length 均为0x24
+        2.3、有一个空属性：testprop,mytest;
+        2.4、有一个字符串属性test_list_string ;有以下值：
+                    "red fish","fly fish", "blue fish";
+        2.5、描述一个中断节点：中断IO挂载在gpx1_2上，中断方法为高                电平方式触发
+3、将上述节点挂载至根目录下</p>
+<h4 id="_1">参考答案</h4>
+<pre><code>test_nod@0x11000C40 {
+                compatible = &quot;farsight,test&quot;;
+                reg = &lt;0x11000C40 0x24
+                       0x11000CE0 0x24&gt;;
+                testprop,mytest;
+                test_list_string = &quot;red fish&quot;,&quot;fly fish&quot;, &quot;blue fish&quot;;
+                interrupt-parent = &lt;&amp;gpx1&gt;;
+                interrupts = &lt;2 4&gt;;
+</code></pre>
+
+<h2 id="5-of-api">5 常用OF API</h2>
+<p>5.1 查找节点</p>
+<pre><code>static inline const char *of_node_full_name(const struct device_node *np)
+{
+    return np ? np-&gt;full_name : &quot;&lt;no-node&gt;&quot;;
+}
+
+extern struct device_node *of_find_node_by_name(struct device_node *from,const char *name);
+extern struct device_node *of_find_node_by_type(struct device_node *from,const char *type);
+extern struct device_node *of_find_compatible_node(struct device_node *from,const char *type, const char *compat);
+extern struct device_node *of_find_matching_node_and_match(
+struct device_node *from,const struct of_device_id *matches,
+const struct of_device_id **match);
+
+extern struct device_node *of_find_node_by_path(const char *path);
+extern struct device_node *of_find_node_by_phandle(phandle handle);
+</code></pre>
+
+<p>常用的是：</p>
+<pre><code>struct device_node *of_find_node_by_path(const char *path);
+struct device_node *of_get_child_by_name(const struct device_node *node,const char *name);
+</code></pre>
+
+<p>数据结构：</p>
+<pre><code>struct device_node {
+    const char *name;
+    const char *type;
+    phandle phandle;
+    const char *full_name;
+    struct  property *properties;
+    struct  property *deadprops;    /* removed properties */
+    struct  device_node *parent;
+    struct  device_node *child;
+    struct  device_node *sibling;
+    struct  device_node *next;  /* next device of same type */
+    struct  device_node *allnext;   /* next in list of all nodes */
+    struct  proc_dir_entry *pde;    /* this node's proc directory */
+    struct  kref kref;
+    unsigned long _flags;
+    void    *data;
+#if defined(CONFIG_SPARC)
+    const char *path_component_name;
+    unsigned int unique_id;
+    struct of_irq_controller *irq_trans;
+#endif
+};
+</code></pre>
+
+<p>从指定的节点中查找属性：</p>
+<p>struct property <em>of_find_property(const struct device_node </em>np,const char <em>name,int </em>lenp)</p>
+<p>数据结构：</p>
+<pre><code>struct property {
+    char    *name;
+    int length;
+    void    *value;
+    struct property *next;
+    unsigned long _flags;
+    unsigned int unique_id;
+};
+
+</code></pre>
+
+<p>从指定的节点中查找compatible属性：</p>
+<pre><code>int of_device_is_compatible(const struct device_node *device,
+        const char *compat)
+</code></pre>
+
+<h2 id="6-of-api">6 通过OF API查找相应的节点、属性</h2>
+<p>以 4 练习的代码为例：</p>
+<h3 id="61">6.1 查找到相关的设备树节点</h3>
+<pre><code>np = of_find_node_by_path("/test_nod@12345678");
+if(!np)
+{       
+    printk("find node fail!\n");
+    ret = -1;
+}
+else{
+
+    printk("find node success!\n");
+    printk("node's name : %s\n",  np-&gt;name);
+    printk("node's full_name : %s\n",  np-&gt;full_name);
+}
+</code></pre>
+<h3 id="62">6.2 从查找到的节点里面分析该节点的属性</h3>
+<h4 id="621-compatible">6.2.1 查找compatible属性</h4>
+<pre><code>property = of_find_property( np, "compatible",NULL);
+
+if(!property)
+{       
+    printk("find property fail!\n");
+    ret = -1;
+}
+else{
+
+    printk("find property success!\n");
+    printk("property's name : %s\n",  property-&gt;name);
+    printk("property's value : %s\n",  (const char *)property-&gt;value);
+}
+</code></pre>
+<h4 id="622-compatible">6.2.2 查找compatible属性的另一种方法</h4>
+<pre><code>int ret_compatible = of_device_is_compatible(np,"farsight,test");
+
+if(!ret_compatible)
+{
+    printk("match compatible fail!\n");
+    ret = -1;
+
+}
+else
+{
+    printk("match compatible success!\n");
+
+}
+</code></pre>
+<h3 id="62_1">6.2 从查找到的节点里面分析该节点的数组属性</h3>
+<pre><code>extern int of_property_read_u32_index(const struct device_node *np,
+                       const char *propname,
+                       u32 index, u32 *out_value);
+extern int of_property_read_u8_array(const struct device_node *np,
+            const char *propname, u8 *out_values, size_t sz);
+extern int of_property_read_u16_array(const struct device_node *np,
+            const char *propname, u16 *out_values, size_t sz);
+extern int of_property_read_u32_array(const struct device_node *np,
+                      const char *propname,
+                      u32 *out_values,
+                      size_t sz);
+</code></pre>
+
+<h3 id="62_2">6.2 从查找到的节点里面分析该节点的字符串数组属性</h3>
+<pre><code>of_property_read_string_index
+</code></pre>
+
+<h3 id="63">6.3 从查找到的节点里面分析该节点的中断属性</h3>
+<p>可参考驱动第二天里的中断</p>
+<h2 id="7-platform">7 platform驱动的变更</h2>
+<h2 id="_2">参考链接：</h2>
+<p>https://blog.csdn.net/cosmoslhf/article/details/49364577
+https://www.cnblogs.com/chineseboy/p/5235608.html
+https://blog.csdn.net/21cnbao/article/details/8457546
+https://blog.csdn.net/qq_20678703/article/details/49100111</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

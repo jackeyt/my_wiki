@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>驱动第一天---驱动基础 # - jackeyt wiki</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">jackeyt wiki</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Welcome to MkDocs</a>
+                            </li>
+                            <li >
+                                <a href="../ARMLinux设备树/">ARMLinux设备树</a>
+                            </li>
+                            <li >
+                                <a href="../SUMMARY/">SUMMARY</a>
+                            </li>
+                            <li >
+                                <a href="../[史上最详细]VSCode搭建ARMLinuxMakefile工程IDE（C-C++）/">VS Code搭建ARM Linux Makefile工程IDE（C/C++）[史上最详细]</a>
+                            </li>
+                            <li >
+                                <a href="../三种总线的横向对比表/">三种总线的横向对比表</a>
+                            </li>
+                            <li >
+                                <a href="../手把手教你从单片机移植驱动到ARMLinux上/">手把手教你从单片机移植驱动到ARMLinux上</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">驱动第一天---驱动基础 #</a>
+                            </li>
+                            <li >
+                                <a href="../驱动第三天---总线/">驱动第三天---总线 #</a>
+                            </li>
+                            <li >
+                                <a href="../驱动第二天---中断/">驱动第二天---中断 #</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../手把手教你从单片机移植驱动到ARMLinux上/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../驱动第三天---总线/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#-">驱动第一天---驱动基础</a></li>
+            <li><a href="#_1">开发环境搭建</a></li>
+            <li><a href="#source-insightlinux">利用source insight创建Linux源码工程</a></li>
+            <li><a href="#_3">驱动模块开发基础</a></li>
+            <li><a href="#_4">字符设备驱动基础</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="-">驱动第一天---驱动基础</h1>
+<p>目录：</p>
+<div class="toc">
+<ul>
+<li><a href="#-">驱动第一天---驱动基础</a><ul>
+<li><a href="#_1">开发环境搭建</a><ul>
+<li><a href="#tftp-ubuntu">一、tftp 服务器搭建（ubuntu版）</a></li>
+<li><a href="#_2">二、开发板的不同启动方式</a></li>
+<li><a href="#nfs">三、开发板挂载NFS服务器</a></li>
+</ul>
+</li>
+<li><a href="#source-insightlinux">利用source insight创建Linux源码工程</a></li>
+<li><a href="#_3">驱动模块开发基础</a><ul>
+<li><a href="#demo">最简单的驱动Demo:</a></li>
+</ul>
+</li>
+<li><a href="#_4">字符设备驱动基础</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ol>
+<li>开发环境搭建</li>
+<li>利用source insight创建Linux源码工程</li>
+<li>驱动模块开发基础</li>
+<li>字符设备驱动基础</li>
+</ol>
+<h2 id="_1">开发环境搭建</h2>
+<h3 id="tftp-ubuntu">一、tftp 服务器搭建（ubuntu版）</h3>
+<p>1.安装tftp-server</p>
+<pre><code>sudo apt-get install tftpd-hpa
+</code></pre>
+<p>2.配置TFTP服务器</p>
+<pre><code>sudo vim /etc/default/tftpd-hpa
+</code></pre>
+<p>将原来的内容改为:</p>
+<pre><code>TFTP_USERNAME="tftp"
+
+TFTP_ADDRESS="0.0.0.0:69"
+
+TFTP_DIRECTORY="tftp根目录" #服务器目录,需要设置权限为777,chomd 777
+
+TFTP_OPTIONS="-l -c -s"
+</code></pre>
+<p>3.重新启动TFTP服务</p>
+<pre><code>sudo service tftpd-hpa restart
+</code></pre>
+<p>4.测试</p>
+<pre><code>sudo netstat -a | grep tftp
+</code></pre>
+<p>可以看到：</p>
+<pre><code>udp0  0 0.0.0.0:tftp0.0.0.0:*  
+udp6   0  0 [::]:tftp   [::]:*
+</code></pre>
+<p>则表示tftpserver搭建成功了。</p>
+<h3 id="_2">二、开发板的不同启动方式</h3>
+<p><strong>1、通过网络加载内核和文件系统</strong></p>
+<p>a)将 镜像文件/uImage拷贝到ubuntu的 /tftpboot下</p>
+<p>b)将 镜像文件/rootfs.tar.xz拷贝到ubuntu的 /source下并解压</p>
+<p>c)将 镜像文件/exynos4412-fs4412.dtb拷贝到ubuntu的 /tftpboot下</p>
+<p>d)修改虚拟机nfs配置文件/etc/exports，添加如下内容并重启nfs服务</p>
+<pre><code>/source/rootfs  *(rw,sync,no_subtree_check,no_root_squash)
+</code></pre>
+<p>e)重新驱动nfs服务</p>
+<pre><code>$ sudo /etc/init.d/nfs-kernel-server restart
+</code></pre>
+<p>f)设置启动参数</p>
+<pre><code># setenv serverip 192.168.9.120
+# setenv ipaddr 192.168.9.233
+# setenv bootcmd tftp 41000000 uImage;tftp 42000000 exynos4412-
+fs4412.dtb;bootm 41000000-42000000
+#setenv bootargs root=/dev/nfs nfsroot=192.168.9.120:/source/rootfs
+rw console=ttySAC2,115200  init=/linuxrc  ip=192.168.9.233
+# saveenv
+</code></pre>
+<blockquote>
+<p>注意：这两个ip应该根据自己的实际情况适当修改</p>
+<p>192.168.9.120 对应Ubuntu的ip；</p>
+<p>192.168.9.233 对应板子的ip </p>
+</blockquote>
+<p><strong>2、从EMMC加载内核和文件系统</strong></p>
+<p>a)拷贝镜像文件/ramdisk.img拷贝到虚拟机/tftpboot目录下
+b)烧写内核镜像到EMMC上</p>
+<pre><code>tftp  41000000  uImage
+movi  write  kernel  41000000
+</code></pre>
+<p>c)烧写设备树文件到EMMC上</p>
+<pre><code>tftp  41000000  exynos4412-fs4412.dtb
+movi  write  dtb  41000000
+</code></pre>
+<p>d)烧写文件系统镜像到EMMC上</p>
+<pre><code>tftp  41000000  ramdisk.img
+movi  write  rootfs  41000000  300000
+</code></pre>
+<p>e)设置启动参数</p>
+<pre><code>setenv bootcmd movi read kernel 41000000\;movi read dtb 42000000\;
+movi read rootfs 43000000 300000\;bootm 41000000 43000000 42000000
+saveenv
+</code></pre>
+<p>f)重新启动开发板，u-boot自动加载、执行内核     </p>
+<h3 id="nfs">三、开发板挂载NFS服务器</h3>
+<p>首先，在ubuntu上安装：</p>
+<pre><code>sudo apt-get install nfs-kernel-server
+</code></pre>
+<p>修改虚拟机nfs配置文件/etc/exports，添加如下内容并重启nfs服务</p>
+<pre><code>/xx/xx  *(rw,sync,no_subtree_check,no_root_squash)
+注意：xx/xx是你要做为nfs服务器的目录
+</code></pre>
+<p>重新驱动nfs服务</p>
+<pre><code>$ sudo /etc/init.d/nfs-kernel-server restart
+</code></pre>
+<p>在开发板上，输入以下命令：</p>
+<pre><code>mount -t nfs -o nolock 192.168.10.10:/home/ubuntu/share/nfs  /mnt/
+</code></pre>
+<h2 id="source-insightlinux">利用source insight创建Linux源码工程</h2>
+<p>参考链接：<a href="http://bbs.elecfans.com/forum.php?mod=viewthread&amp;tid=1114963&amp;extra=">http://bbs.elecfans.com/forum.php?mod=viewthread&amp;tid=1114963&amp;extra=</a></p>
+<h2 id="_3">驱动模块开发基础</h2>
+<p>内核模块是什么？
+Kconfig Makefile 的含义？
+以任意一个选项的字符串去内核 里面查找相对的源码：</p>
+<p>在内核工程里面直接使用如下命令可以生成</p>
+<pre><code>mkdir -p module_install     #创建一个文件夹用于存放编译生成的模块的安装目录
+make INSTALL_MOD_PATH=module_install modules  #编译模块
+make INSTALL_MOD_PATH=module_install modules_install   #安装模块到指定目录
+</code></pre>
+<p>驱动模块开发：</p>
+<blockquote>
+<p>驱动开发四步走</p>
+<p>1，头文件</p>
+<p>2，驱动模块装载和卸载函数入口到声明</p>
+<p>3，实现模块装载和卸载函数入口</p>
+<p>4，GPL声明
+</p>
+</blockquote>
+<h4 id="demo">最简单的驱动Demo:</h4>
+<pre><code>#include &lt;linux/init.h&gt;
+#include &lt;linux/module.h&gt;
+#include &lt;linux/stat.h&gt;
+
+
+static int __init hello_drv_init(void)
+{
+
+    //一般做系统申请资源
+    printk("-------%s-------------\n", __FUNCTION__);
+
+    return 0;
+}
+
+static void __exit hello_drv_exit(void)
+{
+    //一般做系统释放资源
+    printk("-------%s-------------\n", __FUNCTION__);
+
+}
+
+
+module_init(hello_drv_init);
+module_exit(hello_drv_exit);
+
+MODULE_LICENSE("GPL");
+</code></pre>
+<p>驱动的makefile</p>
+<pre><code>ROOTFS_DIR = /home/ubuntu/share/nfs
+
+ifeq ($(KERNELRELEASE), )
+
+KERNEL_DIR = /home/ubuntu/work/linux-3.14-fs4412
+CUR_DIR = $(shell pwd)
+
+all :
+    make -C  $(KERNEL_DIR) M=$(CUR_DIR) modules
+
+clean :
+    make -C  $(KERNEL_DIR) M=$(CUR_DIR) clean
+
+install:
+    cp -raf *.ko   $(ROOTFS_DIR)
+
+
+else
+
+obj-m += hello_drv.o
+#obj-m += math.o
+endif
+</code></pre>
+<blockquote>
+<p>PS：如果要编译多源码构成的一个模块时，可以使用： vers-objs = xx.o xxx.o ....</p>
+</blockquote>
+<p>驱动相关命令：</p>
+<pre><code>安装：insmod xxxx.ko
+
+查看模块安装列表：lsmod
+
+卸载：rmmod xxx
+
+信息:modinfo 查看模块相应的信息以及依赖项
+
+modprobe 安装命令，1、解决依赖项 2、可以直接在目录下搜索相关的驱动，不需要带.ko即可
+</code></pre>
+<p>卸载驱动出错：</p>
+<pre><code>rmmod fs4412_led
+rmmod: can't change directory to '/lib/modules': No such file or directory
+</code></pre>
+<p>解决方案：</p>
+<pre><code>mkdir -p  /lib/modules/3.14.0
+</code></pre>
+<p>1，参数传递</p>
+<pre><code>加载ko：  insmod hello.ko myname="avd" myvalue=33
+
+用途： wifi驱动，wifiname wifipass
+在代码如何处理参数：
+module_param(name, type, perm)
+参数1：表示参数到名字，比如myname， myvalue
+参数2：参数到类型, charp, int,bool...
+参数3： /sys/modules/表示文件到权限： 0666
+
+用法：
+    module_param(myvalue, int, 0666);
+    module_param(myname, charp, S_IRUGO|S_IWUGO|S_IXUGO);
+</code></pre>
+<p>2，符号导出</p>
+<pre><code>    #include &lt;linux/module.h&gt;
+    #include &lt;linux/init.h&gt;
+
+
+
+    //不需要模块加载和卸载到入口声明，直接定义好一些封装的函数
+
+    int my_add(int a, int b)
+    {
+        return a+b;
+    }
+
+    EXPORT_SYMBOL(my_add);
+
+    int my_sub(int a, int b)
+    {
+        return a-b;
+    }
+
+    EXPORT_SYMBOL(my_sub);
+
+    MODULE_LICENSE("GPL");
+</code></pre>
+<h2 id="_4">字符设备驱动基础</h2>
+<p>一、 linux  设备驱动类型主要有以下四种：字符设备，块设备，网络设备，杂项设备</p>
+<p>二、设备号：</p>
+<blockquote>
+<p>一个设备有主次设备号；主设备号可以理解成为一类，而次设备可以理解成为具体某个对象</p>
+<p>以下面的为例：</p>
+</blockquote>
+<pre><code>7:0 -&gt; ../loop0
+7:1 -&gt; ../loop1
+7:2 -&gt; ../loop2
+7:3 -&gt; ../loop3
+7:4 -&gt; ../loop4
+7:5 -&gt; ../loop5
+7:6 -&gt; ../loop6
+7:7 -&gt; ../loop7
+</code></pre>
+<p>7代表主设备号，0~7代表各个设备的次设备号</p>
+<p>三、Linux提供的字符设备驱动接口</p>
+<p>3.1、申请注册一个设备（char 字符设备）：</p>
+<pre><code>static inline int register_chrdev(unsigned int major, const char *name,
+                                const struct file_operations *fops);
+</code></pre>
+<p><strong>参数1、major   表设备号（32位的值 由主+次设备号构成）高12位主设备号+低20位的次设备号构成
+exp: 主设备号：1 次设备号：2   设备号=1&lt;&lt;20|2   =12构成了设备号</strong></p>
+<pre><code>#define     MINORBITS   20
+#define MINORMASK   ((1U &lt;&lt; MINORBITS) - 1)
+#define MKDEV(ma,mi)    (((ma) &lt;&lt; MINORBITS) | (mi))
+#define MAJOR(dev)      ((unsigned int) ((dev) &gt;&gt; MINORBITS))
+#define MINOR(dev)      ((unsigned int) ((dev) &amp; MINORMASK))
+//注：ma表示主设备号，mi表示次设备号
+</code></pre>
+<p><strong>参数2：name    表示设备名字</strong></p>
+<blockquote>
+<p>/dev/下面的设备名字   /dev/xxx</p>
+</blockquote>
+<p><strong>参数3：file_operations</strong></p>
+<p>表示文件操作集：比如常见的open,read,write,close,ioctl.....</p>
+<pre><code>struct file_operations {
+    struct module *owner;
+    loff_t (*llseek) (struct file *, loff_t, int);
+    ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
+    ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+    ssize_t (*aio_read) (struct kiocb *, const struct iovec *, unsigned long, loff_t);
+    ssize_t (*aio_write) (struct kiocb *, const struct iovec *, unsigned long, loff_t);
+    int (*iterate) (struct file *, struct dir_context *);
+    unsigned int (*poll) (struct file *, struct poll_table_struct *);
+    long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
+    long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
+    int (*mmap) (struct file *, struct vm_area_struct *);
+    int (*open) (struct inode *, struct file *);
+    int (*flush) (struct file *, fl_owner_t id);
+    int (*release) (struct inode *, struct file *);
+    int (*fsync) (struct file *, loff_t, loff_t, int datasync);
+    int (*aio_fsync) (struct kiocb *, int datasync);
+    int (*fasync) (int, struct file *, int);
+    int (*lock) (struct file *, int, struct file_lock *);
+    ssize_t (*sendpage) (struct file *, struct page *, int, size_t, loff_t *, int);
+    unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);
+    int (*check_flags)(int);
+    int (*flock) (struct file *, int, struct file_lock *);
+    ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);
+    ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *, size_t, unsigned int);
+    int (*setlease)(struct file *, long, struct file_lock **);
+    long (*fallocate)(struct file *file, int mode, loff_t offset,
+              loff_t len);
+    int (*show_fdinfo)(struct seq_file *m, struct file *f);
+};
+</code></pre>
+<p>3.2、释放一个设备（char 字符设备）：</p>
+<pre><code>static inline void unregister_chrdev(unsigned int major, const char *name)
+</code></pre>
+<blockquote>
+<p>参数1、major   表设备号</p>
+<p>参数2：name    表示设备名字</p>
+</blockquote>
+<p>3.3、创建设备节点：</p>
+<p>3.3.1、手动创建一个设备节点：mknod</p>
+<pre><code>mknod: invalid option -- 'h'
+BusyBox v1.22.1 (2014-08-10 15:54:57 CST) multi-call binary.
+
+Usage: mknod [-m MODE] NAME TYPE MAJOR MINOR
+
+Create a special file (block, character, or pipe)
+
+    -m MODE Creation mode (default a=rw)
+TYPE:
+    b   Block device
+    c or u  Character device
+    p   Named pipe (MAJOR and MINOR are ignored)
+</code></pre>
+<blockquote>
+<p>用法：
+  mknod /dev/设备名  类型  主设备号 次设备号</p>
+</blockquote>
+<p>比如：
+    <code>mknod  /dev/chr0  c  250 0</code></p>
+<p>注：手动创建--缺点/dev/目录中文件都是在内存中，断电后/dev/文件就会消失</p>
+<p>3.3.2、自动创建（通过udev/mdev机制）</p>
+<blockquote>
+<p>接口一：创建一个类</p>
+</blockquote>
+<pre><code>    struct class *class_create(owner, name)//创建一个类
+</code></pre>
+<blockquote>
+<p>参数1： THIS_MODULE</p>
+<p>参数2： 字符串名字，自定义</p>
+<p>返回一个class指针</p>
+</blockquote>
+<p>举例： 
+    <code>class_create(THIS_MODULE,"hello_class")</code></p>
+<p>注：调试信息：  <code>cat  /sys/class/</code>
+可以看到：与class_create中对应的hello_class</p>
+<pre><code>bdi/   hello_class/   misc/  rtc/   tty/
+block/ i2c-adapter/   mmc_host/  scsi_device/   vc/
+dma/   input/ net/   scsi_disk/ vtconsole/
+firmware/  mdio_bus/  phy/   scsi_generic/
+graphics/  mem/   regulator/ scsi_host/
+</code></pre>
+<p>接口二：销毁一个类</p>
+<pre><code>void class_destroy(devcls);
+</code></pre>
+<p>参数1： class结构体，class_create调用之后到返回值</p>
+<blockquote>
+<p>接口三:创建一个设备文件</p>
+</blockquote>
+<pre><code>    struct device *device_create(struct class * class, struct device * 
+    parent, dev_t devt, void * drvdata, const char * fmt,...)
+</code></pre>
+<blockquote>
+<p>参数1： class结构体，class_create调用之后到返回值</p>
+<p>参数2：表示父亲，一般直接填NULL</p>
+<p>参数3： 设备号类型 dev_t</p>
+<p>参数4：私有数据，一般直接填NULL</p>
+<p>参数5和6：表示可变参数，字符串，表示设备节点名字:(exp)led2、gpio ----&gt;&gt;/dev/led2 、gpio</p>
+</blockquote>
+<p>举例： </p>
+<pre><code>device_create(hello_class, NULL,MKDEV(my_major,0), NULL,"hello_dev");
+</code></pre>
+<p>注：调试信息：  <code>ls /dev/hello_dev -l</code></p>
+<p>可以看到：与device_create中对应的主、次设备号，以及设备节点名称</p>
+<pre><code>  crw-r--r--1 00 253,   0 Jan  1 00:08 /dev/hello_dev
+</code></pre>
+<p>接口四:销毁一个设备文件</p>
+<p>原型：
+        <code>void device_destroy(struct class *class, dev_t devt)</code></p>
+<p>参数1： class结构体，class_create调用之后到返回值</p>
+<p>参数2： 设备号类型 dev_t</p>
+<p>例子：
+        <code>void device_destroy(devcls,  MKDEV(dev_major, 0));</code>            </p>
+<p>3.4、 应用程序需要传递数据给驱动</p>
+<p><code>int copy_to_user(void __user * to, const void * from, unsigned long n)</code></p>
+<p>将数据从内核空间拷贝到用户空间,一般是在驱动中chr_drv_read()用</p>
+<p>参数1：应用驱动中的一个buffer</p>
+<p>参数2：内核空间到一个buffer</p>
+<p>参数3：个数</p>
+<p>返回值：大于0，表示出错，剩下多少个没有拷贝成功;;等于0，表示正确</p>
+<p><code>int copy_from_user(void * to, const void __user * from, unsigned long n)</code></p>
+<p>将数据从用户空间拷贝到内核空间,一般是在驱动中chr_drv_write()用</p>
+<p>参数1：内核驱动中的一个buffer</p>
+<p>参数2：应用空间到一个buffer</p>
+<p>参数3：大小</p>
+<p>3.5、IOCTL的用法：</p>
+<p>驱动层：
+    static long hello_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+    {</p>
+<pre><code>    switch(cmd)
+    {   
+        case cmd_test1:
+            printk("cmd is cmd_test1\n");
+            printk("cmd test1 's arg:%ld\n",arg);
+            break;
+        case cmd_test2:
+            printk("cmd is cmd_test2\n");
+            break;
+        default:
+            printk("out of cmd!\n");
+            return -1;
+        break;
+
+    }
+    return 0;
+}
+</code></pre>
+<p>应用层：</p>
+<pre><code>ioctl(fd,cmd,arg);
+</code></pre>
+<p>3.6 printk 等级说明：</p>
+<pre><code>#define KERN_EMERG  KERN_SOH "0"    /* system is unusable */
+#define KERN_ALERT  KERN_SOH "1"    /* action must be taken immediately */
+#define KERN_CRIT   KERN_SOH "2"    /* critical conditions */
+#define KERN_ERR    KERN_SOH "3"    /* error conditions */
+#define KERN_WARNING    KERN_SOH "4"    /* warning conditions */
+#define KERN_NOTICE KERN_SOH "5"    /* normal but significant condition */
+#define KERN_INFO   KERN_SOH "6"    /* informational */
+#define KERN_DEBUG  KERN_SOH "7"    /* debug-level messages */
+
+#define KERN_DEFAULT    KERN_SOH "d"    /* the default kernel loglevel */
+</code></pre>
+<p>3.7 字符设备驱动框架总结：</p>
+<p>字符设备驱动的框架：</p>
+<blockquote>
+<p>1、完善最基本的框架：
+  头文件</p>
+<p>入出口声明</p>
+<p>MODULE_LICENSE("GPL");</p>
+<p>2、在入口函数里面：</p>
+<p>2.1 申请一个字符设备：register_chrdev </p>
+<pre><code>  2.1.1 补充相应的参数，设备号，名字，文件操作集：file_operations
+</code></pre>
+<p>2.2  申请一个类：class_create</p>
+<p>2.3  申请一个设备：device_create
+</p>
+<p>3、在出口函数里面：</p>
+<p>3.1 释放设备： device_destroy
+  3.2 释放类：   class_destroy
+  3.3 释放字符设备： unregister_chrdev</p>
+<p>4、文件操作集：file_operations 接口完善</p>
+<p>open,write,read,ioctl.......</p>
+</blockquote>
+<p>3.8 出错码提示：</p>
+<pre><code>static inline long __must_check IS_ERR(__force const void *ptr)
+</code></pre>
+<blockquote>
+<p>注：关于指针是否出错？</p>
+</blockquote>
+<pre><code>static inline long __must_check PTR_ERR(__force const void *ptr)
+</code></pre>
+<blockquote>
+<p>注：将指针出错的具体原因转换成一个出错码</p>
+</blockquote>
+<p>3.9 在驱动程序中向内核申请内存空间：</p>
+<pre><code>static __always_inline void *kmalloc(size_t size, gfp_t flags)
+</code></pre>
+<p>flags 取 GFP_KERNEL：</p>
+<pre><code>代表向内核申请内存资源，如果出错了，就会一直阻塞（休眠）
+</code></pre>
+<p>4.0  硬件重映射</p>
+<p>led 对应的gpiox2_7 con :0x11000c40
+led 对应的gpiox2_7 dat :0x11000c44</p>
+<pre><code>ioremap();
+</code></pre>
+<p>原型：
+    static inline void __iomem *ioremap(phys_addr_t offset, unsigned long size)</p>
+<p>参数1：物理地址
+参数2：需要映射的大小</p>
+<pre><code>iounmap();//把ioremap的操作取消
+</code></pre>
+<p>对于寄存器操作的API：</p>
+<pre><code>readl(addr)//从地址addr中读取出其值并返回
+writel(addr,value)  //把值 value写入到addr地址中
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

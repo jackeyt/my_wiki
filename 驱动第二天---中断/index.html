@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>驱动第二天---中断 # - jackeyt wiki</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">jackeyt wiki</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="..">Welcome to MkDocs</a>
+                            </li>
+                            <li >
+                                <a href="../ARMLinux设备树/">ARMLinux设备树</a>
+                            </li>
+                            <li >
+                                <a href="../SUMMARY/">SUMMARY</a>
+                            </li>
+                            <li >
+                                <a href="../[史上最详细]VSCode搭建ARMLinuxMakefile工程IDE（C-C++）/">VS Code搭建ARM Linux Makefile工程IDE（C/C++）[史上最详细]</a>
+                            </li>
+                            <li >
+                                <a href="../三种总线的横向对比表/">三种总线的横向对比表</a>
+                            </li>
+                            <li >
+                                <a href="../手把手教你从单片机移植驱动到ARMLinux上/">手把手教你从单片机移植驱动到ARMLinux上</a>
+                            </li>
+                            <li >
+                                <a href="../驱动第一天---驱动基础/">驱动第一天---驱动基础 #</a>
+                            </li>
+                            <li >
+                                <a href="../驱动第三天---总线/">驱动第三天---总线 #</a>
+                            </li>
+                            <li class="active">
+                                <a href="./">驱动第二天---中断 #</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li >
+                                <a rel="next" href="../驱动第三天---总线/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="disabled">
+                                <a rel="prev" >
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#-">驱动第二天---中断</a></li>
+            <li><a href="#1">1. 中断的基本概念</a></li>
+            <li><a href="#2">2. 中断号的获取方式</a></li>
+            <li><a href="#22">2.2 在驱动中通过设备树获取中断号</a></li>
+            <li><a href="#3">3. 中断申请</a></li>
+            <li><a href="#4">4.中断处理</a></li>
+            <li><a href="#5">5. 上传数据给用户</a></li>
+            <li><a href="#6io">6.IO模型</a></li>
+            <li><a href="#7">7 异步信号</a></li>
+            <li><a href="#8">8 中断下半部</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="-">驱动第二天---中断</h1>
+<div class="toc">
+<ul>
+<li><a href="#-">驱动第二天---中断</a><ul>
+<li><a href="#1">1. 中断的基本概念</a></li>
+<li><a href="#2">2. 中断号的获取方式</a></li>
+<li><a href="#22">2.2 在驱动中通过设备树获取中断号</a></li>
+<li><a href="#3">3. 中断申请</a><ul>
+<li><a href="#31">3.1申请中断</a></li>
+<li><a href="#32">3.2 中断释放</a></li>
+</ul>
+</li>
+<li><a href="#4">4.中断处理</a></li>
+<li><a href="#5">5. 上传数据给用户</a></li>
+<li><a href="#6io">6.IO模型</a><ul>
+<li><a href="#61">6.1 阻塞</a><ul>
+<li><a href="#62">6.2 非阻塞</a></li>
+</ul>
+</li>
+<li><a href="#63-poll">6.3 多路复用 (poll)</a></li>
+</ul>
+</li>
+<li><a href="#7">7 异步信号</a></li>
+<li><a href="#8">8 中断下半部</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr />
+<ol>
+<li>中断的基本概念</li>
+<li>中断号的获取方式</li>
+<li>中断申请</li>
+<li>中断处理</li>
+<li>上传数据给用户</li>
+<li>IO模型</li>
+<li>异步信号</li>
+<li>中断下半部</li>
+</ol>
+<hr />
+<h2 id="1">1. 中断的基本概念</h2>
+<blockquote>
+<p>参考裸机开发中的相关资料</p>
+</blockquote>
+<h2 id="2">2. 中断号的获取方式</h2>
+<p>设备树：dts  设备树源码
+    设备树里面一些通用的定义，提取出，形成类似c 头文件，dtsi 称之为：设备树的头文件，#include "xxx.dtsi"
+dtc   把dts编译成二进制文件（dtb） 给内核使用  </p>
+<p>1，中断号--就是一个号码，需要通过一定的方式去获取到</p>
+<pre><code>获取中断号到方法：
+    1， 宏定义
+            IRQ_EINT(号码) //eyxnos4412-mach.h//旧内核2.6.xxx
+
+    2，设备树文件中  //在3.14.0内核中，从设备树中获取
+        arch/arm/boot/dts/exynos4412-fs4412.dts
+        --&gt; arch/arm/boot/dts/exynos4412.dtsi
+            --&gt;arch/arm/boot/dts/exynos4x12.dtsi
+                --&gt;arch/arm/boot/dts/exynos4x12-pinctrl.dtsi
+</code></pre>
+<p>现在以key3为例：
+1，看原理图   key3---&gt;SIM_DET----&gt;gpx1_2     </p>
+<p>2, 查看设备树文件：arch/arm/boot/dts/exynos4x12-pinctrl.dtsi</p>
+<p>3，确定了一个中断号的源：以key3为例，对应datasheet（参考4412手册，752页关于中断号的描述）的中断号：26</p>
+<p>4，在设备树中，关于gpx1_2的中断号也是26</p>
+<p>在设备树头文件中：arch/arm/boot/dts/exynos4x12-pinctrl.dtsi</p>
+<pre><code> gpx1: gpx1 {
+                gpio-controller;
+                #gpio-cells = &lt;2&gt;;
+
+                interrupt-controller;
+                interrupt-parent = &lt;&amp;gic&gt;;
+                interrupts = &lt;0 24 0&gt;, &lt;0 25 0&gt;, &lt;0 26 0&gt;, &lt;0 27 0&gt;,
+                             &lt;0 28 0&gt;, &lt;0 29 0&gt;, &lt;0 30 0&gt;, &lt;0 31 0&gt;;
+                #interrupt-cells = &lt;2&gt;;
+        };
+</code></pre>
+<p>做一个设备树节目：描述Key3，并加载到开发板上面</p>
+<pre><code>vim  arch/arm/boot/dts/exynos4412-fs4412.dts
+</code></pre>
+<p>在编程过程中，需要定义自己的节点--描述当前设备用的中断号</p>
+<blockquote>
+<p>arch/arm/boot/dts/exynos4412-fs4412.dts </p>
+</blockquote>
+<pre><code>    key3_int_nod{
+                    compatible = "key3_int";
+                    interrupt-parent = &lt;&amp;gpx1&gt;;
+                    interrupts = &lt;2 4&gt;
+    };
+</code></pre>
+<p>这里的<code>interrupts = &lt;2 4&gt;</code> </p>
+<p>第一项2 表示。GPX1-2<br />
+第二项4 表示 中断触发方式 具体的值参考：
+\Documentation\devicetree\bindings\pinctrl</p>
+<p>编译设备树：<code>make dtbs</code></p>
+<p>烧录到开发板。。。。。</p>
+<p>设备树调试信息：
+cat /proc/device-tree/</p>
+<h2 id="22">2.2 在驱动中通过设备树获取中断号</h2>
+<p>在驱动中，获取设备树的信息的APIs：</p>
+<pre><code>// 获取到设备树中到节点
+//需要:linux/of.h
+struct device_node *of_find_node_by_path(const char *path);
+参数：path 就是设备树节点所在的路径
+返回值：struct device_node *
+
+// 通过节点去获取到中断号码
+//需要：#include &lt;linux/of_irq.h&gt;
+unsigned int irq_of_parse_and_map(struct device_node *dev, int index)
+参数1:节点
+参数2：索引号
+返回值：中断号
+</code></pre>
+<h2 id="3">3. 中断申请</h2>
+<h3 id="31">3.1申请中断</h3>
+<p>获取到了中断号之后，我们需要做一个中断号，然后使用中断申请函数，去申请中断：</p>
+<pre><code>request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags,const char *name, void *dev)
+
+
+参数1：中断号
+参数2：这个类型的函数指针：typedef irqreturn_t (*irq_handler_t)(int, void *);
+      函数指针所指向的函数的返回值是一个枚举类型：
+      typedef enum irqreturn irqreturn_t;
+
+        具体有以下定义：
+        enum irqreturn {
+                    IRQ_NONE        = (0 &lt;&lt; 0),
+                    IRQ_HANDLED     = (1 &lt;&lt; 0),
+                    IRQ_WAKE_THREAD     = (1 &lt;&lt; 1),
+                };
+
+
+参数3：flag表示 中断触发的方式：
+        #define IRQF_TRIGGER_NONE    0x00000000//内部控制器触发中断的时候的标志
+        #define IRQF_TRIGGER_RISING  0x00000001//上升沿1&lt;&lt;0
+        #define IRQF_TRIGGER_FALLING 0x00000002//下降沿1&lt;&lt;1
+        #define IRQF_TRIGGER_HIGH    0x00000004//高电平
+        #define IRQF_TRIGGER_LOW     0x00000008//低电平
+        #define IRQF_TRIGGER_MASK   (IRQF_TRIGGER_HIGH | IRQF_TRIGGER_LOW | \
+                         IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING)
+
+参数4：名字
+    可以通过cat /proc/intterrupts
+参数5：给中断处理函数的参数
+</code></pre>
+<h3 id="32">3.2 中断释放</h3>
+<p>释放设备中断资源：</p>
+<pre><code>free_irq(unsigned int irq, void * dev_id);
+</code></pre>
+<h2 id="4">4.中断处理</h2>
+<pre><code>irqreturn_t key_drv_irq_handler(int v,void *arg)
+{
+    printk("-------------%s-----------\n",__FUNCTION__);
+    if(readl(reg_addr+4) &amp;(1&lt;&lt;2) )
+    {
+
+        printk("key3 up!\n");
+    }
+    else
+    {
+        printk("key3 press down!\n");
+
+    }
+    return IRQ_HANDLED;
+}
+</code></pre>
+<h2 id="5">5. 上传数据给用户</h2>
+<pre><code>    static ssize_t key_drv_read(struct file *file, char __user *buf,
+        size_t nbytes, loff_t *ppos)
+    {
+        int usr_ret;
+        //printk("--------------%s--------------\n",__FUNCTION__);
+
+        usr_ret =copy_to_user(buf,&amp;key_dev-&gt;key_t,sizeof(struct key_desc));
+        if(usr_ret &gt;0)
+        {
+            printk("read error\n");
+            return usr_ret;
+        }
+        memset(&amp;key_dev-&gt;key_t,0,sizeof(struct key_desc));
+        return 0;
+    }
+</code></pre>
+<h2 id="6io">6.IO模型</h2>
+<p>文件io模型：</p>
+<blockquote>
+<p>1，非阻塞:  立即返回数据给用户，读写之间的时候段很短，非常浪费资源。</p>
+<p>2，阻塞 ：当进程在读取数据，如果资源/数据没准备好，进程就进行休眠，让出系统调度，可以减少资源开支</p>
+<p>3，多路复用--select/poll：poll可用于多路设备，资源的监控，用于多种设备都是阻塞的情况下，可以实现轮循的动作。</p>
+<p>4, 异步信号通知faync ：不需要同步读写数据，负责监控一个可见的信号，当信号发生时才做处理，不影响其他任务的正常执行。
+</p>
+</blockquote>
+<h3 id="61">6.1 阻塞</h3>
+<p>当进程在读取外部设备的资源(数据)，资源没有准备好，进程就会休眠</p>
+<pre><code>linux应用中，大部分的函数接口都是阻塞
+scanf();
+read();
+write();
+accept();
+</code></pre>
+<hr />
+<p>休眠在驱动的实现：</p>
+<pre><code>1,将当前进程加入到等待队列头中
+    add_wait_queue(wait_queue_head_t * q, wait_queue_t * wait)
+2，将当前进程状态设置成TASK_INTERRUPTIBLE (可中断的状态)
+    set_current_state(TASK_INTERRUPTIBLE)
+3，让出调度--休眠
+    schedule(void)
+</code></pre>
+<hr />
+<pre><code>更加智能的接口，等同于上面的三个接口：
+    wait_event_interruptible(wait_queue_head_t *q, condition)
+
+参数1：typedef struct __wait_queue_head wait_queue_head_t;
+        等待头 指针
+参数2：为0的时候 就等待数据
+        为1的时候 ，就不等
+</code></pre>
+<p>驱动如何去写代码</p>
+<pre><code>1，等待队列头
+    wait_queue_head_t wq_head;
+
+    init_waitqueue_head(wait_queue_head_t *q);
+
+2，在需要等待(没有数据)的时候，进行休眠
+    wait_event_interruptible(wait_queue_head_t *q, condition)
+
+
+3，在一个合适的时候(有数据)，会将进程唤醒
+    wake_up_interruptible
+
+   // 表示有数据,需要去唤醒整个进程/等待队列
+    wake_up_interruptible(wq_head);
+    //同时设置标志位
+    key_dev-&gt;key_state  = 1;
+</code></pre>
+<h4 id="62">6.2 非阻塞</h4>
+<blockquote>
+<p>在读写的时候，如果没有数据，立刻返回，并且返回一个出错码
+用的会比较少，因为比较耗资源</p>
+</blockquote>
+<p>在打开（open）一个设备节点文件的时候，加入O_NONBLOCK这个标志，那么可以实现非阻塞</p>
+<p>在fcntl.h 中的定义：</p>
+<pre><code>#ifndef O_NONBLOCK
+#define O_NONBLOCK  00004000
+</code></pre>
+<p>对于应用程序代码来说：</p>
+<pre><code>open("/dev/key0", O_RDWR|O_NONBLOCK);
+</code></pre>
+<hr />
+<p>对于驱动程序来说：</p>
+<pre><code>//驱动中需要去区分，当前模式是阻塞还是非阻塞
+//如果当前是非阻塞模式，并且没有数据，立马返回一个出错码
+if(   (file-&gt;f_flags &amp; O_NONBLOCK) &amp;&amp; (!key_dev-&gt;key_status))//非阻塞的情况
+{
+    return -EAGAIN;
+}
+</code></pre>
+<h3 id="63-poll">6.3 多路复用 (poll)</h3>
+<p>在ubuntu 主机里面，输入<code>man poll</code> 可以看到相应的使用方法</p>
+<pre><code>#include &lt;poll.h&gt;
+int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+</code></pre>
+<p>参数1：struct pollfd *fds </p>
+<pre><code>  struct pollfd {
+               int   fd;         /* 打开的设备对应的fd */
+               short events;     /* 请求的事件 */
+               short revents;    /* 返回的事件 */
+               //对于events 和 revents  常用的无非就以下几种
+               //POLLIN 读
+               //POLLOUT 写
+               //POLLIN 出错
+               };
+</code></pre>
+<p>参数2：监控的 fds 的个数
+参数3：超时的时间，单位为ms(毫秒)</p>
+<pre><code>    如果是正数，表示等待n ms
+    如果是0的时候就马上返回，非阻塞
+    如果是负数，-1 表示无限等待
+</code></pre>
+<p>返回值：    为正数的时候表示成功，表示fd中有数据
+        返回为-1的时候 表示出错  且会设定errno 可以使用perror(  ".....")
+        返回为0的时候 表示超时出错且fd没准备好</p>
+<p>驱动里面代码怎么样写？
+1、在file_operation 里面有这个成员：</p>
+<pre><code>unsigned int (*poll) (struct file *, struct poll_table_struct *);
+</code></pre>
+<p>其中，关于struct poll_table_struct的定义如下：</p>
+<pre><code>typedef struct poll_table_struct {
+    poll_queue_proc _qproc;
+    unsigned long _key;
+} poll_table;
+</code></pre>
+<p>2、在file_operations myfops中添加注册成员：</p>
+<pre><code>const struct file_operations myfops={
+    .open = key_drv_open,
+    .write=  key_drv_write,
+    .read = key_drv_read,
+    .release = key_drv_close,
+    .poll = key_poll;
+};
+</code></pre>
+<p>3、实现这个成员函数：</p>
+<pre><code>unsigned int key_poll(struct file *filep, struct poll_table_struct * poll_t)
+{
+    unsigned int mask;
+    printk("--------------%s--------------\n",__FUNCTION__);
+
+    poll_wait(filp,      key_dev-&gt;wq_head,     poll_t  );
+
+    if(key_dev-&gt;key_status)
+        mask |= POLLIN;
+    else
+        mask = 0;
+
+    return mask;
+}
+</code></pre>
+<h2 id="7">7 异步信号</h2>
+<blockquote>
+<p>异步信号通知： 当有数据到时候，驱动会发送信号(SIGIO)给应用，就可以异步去读写数据，不用主动去读写</p>
+</blockquote>
+<p>7.1  应用--处理信号，主要是读写数据</p>
+<p>第一步：</p>
+<pre><code>#include &lt;signal.h&gt;
+typedef void (*sighandler_t)(int);
+sighandler_t signal(int signum, sighandler_t handler);
+
+ void catch_signale(int signo)
+{
+    if(signo == SIGIO)
+    {
+        printf("we got sigal SIGIO");
+        // 读取数据
+        read(fd, &amp;event, sizeof(struct key_event));
+        if(event.code == KEY_ENTER)
+        {
+            if(event.value)
+            {
+                printf("APP__ key enter pressed\n");
+            }else
+            {
+                printf("APP__ key enter up\n");
+            }
+        }
+    }
+
+}
+</code></pre>
+<p>第二步：</p>
+<pre><code>int fcntl(int fd, int cmd, ... /* arg */ );
+</code></pre>
+<p>把SIGIO的信号关联到本进程（属主进程）</p>
+<p>把fd改成异步的模式：F_flag |= FASYNC</p>
+<pre><code>#define FASYNC      00020000    /* fcntl, for BSD compatibility */
+
+//first signed SIGIO to handler func
+signal(SIGIO, signal_handler);
+
+//second  set process id to caught SIGIO
+fcntl(fd,   F_SETOWN,   getid());
+
+//last,set fd to async
+flags = fcntl(fd, F_GETFL);
+flags |= FASYNC;
+fcntl(fd, F_SETFL, flags);
+</code></pre>
+<p>第三步：</p>
+<p>驱动--发送信号</p>
+<p>1，需要和进程进行关联--记录信号该发送给谁</p>
+<pre><code>实现一个fasync的接口:
+
+//int (*fasync) (int, struct file *, int);
+int key_fasync(int fd, struct file *filp, int on)
+{
+    return fasync_helper(fd, filp, on, &amp;key_dev-&gt;fasync);   
+}
+const struct file_operations myfops={
+        。。。。。
+    .fasync = key_fsync,
+};
+</code></pre>
+<p>//只需要调用这个接口：</p>
+<pre><code>int fasync_helper(int fd, struct file * filp, int on, struct fasync_struct **fapp);
+</code></pre>
+<p>参数1-3从：<code>int key_fasync(int fd, struct file *filp, int on)</code> 传入即可</p>
+<p>7.2  在某个特定的时候去发送信号，在有数据的时候</p>
+<pre><code>//发送信号
+kill_fasync(&amp;event-&gt;fasync, SIGIO,  POLLIN);//read
+</code></pre>
+<h2 id="8">8 中断下半部</h2>
+<p>中断上下文是什么概念？</p>
+<p>中断下半部的实现的方法有哪些？</p>
+<p>1，softirq  :处理速度快，使用复杂，需要修改内核源码，对于我们用户来说呢，用得比较少也不推荐大家使用</p>
+<p>2, tasklet  ：使用了sotfirq做为二次封装，处理速度较快，但是它工作于中断上下文，里面不能使用阻塞型接口，延时函数</p>
+<p>3, workqueue ：并没有使用了sotfirq做为二次封装，处理速度稍慢，对于用户来说无影响，灵活之处：工作在进程上下文，可以使用阻塞型函数，也可以延时。。。</p>
+<p>一、tasklet的使用：</p>
+<p>首先是，tasklet 的数据结构：</p>
+<pre><code>struct tasklet_struct
+{
+    struct tasklet_struct *next;
+    unsigned long state;
+    atomic_t count;
+    void (*func)(unsigned long);
+    unsigned long data;
+};
+</code></pre>
+<p>void tasklet_init(struct tasklet_struct <em>t,
+             void (</em>func)(unsigned long), unsigned long data);</p>
+<p>tasklet_schedule(struct tasklet_struct *t);</p>
+<p>tasklet_kill(struct tasklet_struct *t);//释放资源</p>
+<p>二、工作 队列 workqueue的实现</p>
+<pre><code>    struct work_struct {
+        atomic_long_t data;
+        struct list_head entry;
+        work_func_t func;
+    };
+
+    typedef void (*work_func_t)(struct work_struct *work);
+
+
+
+    a， 初始化
+
+        void work_irq_half(struct work_struct *work)
+        {
+            printk("-------%s-------------\n", __FUNCTION__);
+            // 表示有数据,需要去唤醒整个进程/等待队列
+            wake_up_interruptible(&amp;key_dev-&gt;wq_head);
+            //同时设置标志位
+            key_dev-&gt;key_state  = 1;
+
+            //发送信号
+            kill_fasync(&amp;key_dev-&gt;faysnc, SIGIO, POLLIN);
+
+        }
+        struct work_struct mywork;
+
+        INIT_WORK(struct work_struct *work, work_func_t func);
+
+    b, 在上半部中放入到内核线程中--启动
+
+        schedule_work(&amp;key_dev-&gt;mywork);
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
