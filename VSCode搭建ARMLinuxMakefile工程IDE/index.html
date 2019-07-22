@@ -38,7 +38,7 @@
     
     
       
-        <title>VS Code搭建ARM Linux Makefile工程IDE（C/C++）[史上最详细] - jackeyt wiki</title>
+        <title>0.IDE环境搭建 - jackeyt wiki</title>
       
     
     
@@ -103,7 +103,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                VS Code搭建ARM Linux Makefile工程IDE（C/C++）[史上最详细]
+                0.IDE环境搭建
               
             </span>
           
@@ -278,10 +278,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
     
     <label class="md-nav__link" for="nav-3">
       ARM_Linux应用开发
@@ -297,11 +299,212 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../VSCode搭建ARMLinuxMakefile工程IDE/" title="0.IDE环境搭建" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        0.IDE环境搭建
+      </label>
+    
+    <a href="./" title="0.IDE环境搭建" class="md-nav__link md-nav__link--active">
       0.IDE环境搭建
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0" title="0.环境介绍" class="md-nav__link">
+    0.环境介绍
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1cc-makefile" title="1.简单的C/C++ Makefile工程" class="md-nav__link">
+    1.简单的C/C++ Makefile工程
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" title="1.1 整体工程预览" class="md-nav__link">
+    1.1 整体工程预览
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-addc" title="1.2 add.c" class="md-nav__link">
+    1.2 add.c
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-subc" title="1.3  sub.c" class="md-nav__link">
+    1.3  sub.c
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-testh" title="1.4  test.h" class="md-nav__link">
+    1.4  test.h
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-makefile" title="1.5  makefile" class="md-nav__link">
+    1.5  makefile
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-vs-code" title="2. VS Code开发环境搭建" class="md-nav__link">
+    2. VS Code开发环境搭建
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-vs-code" title="2.1  VS Code导入工程" class="md-nav__link">
+    2.1  VS Code导入工程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-vs-code" title="2.2  VS Code自定义生成编译任务" class="md-nav__link">
+    2.2  VS Code自定义生成编译任务
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-tasksjson" title="2.2.1 至简的tasks.json参考" class="md-nav__link">
+    2.2.1 至简的tasks.json参考
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-tasksjson" title="2.2.2 添加出错信息的tasks.json参考" class="md-nav__link">
+    2.2.2 添加出错信息的tasks.json参考
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-vs-code_1" title="2.2  VS Code自定义生成调试任务" class="md-nav__link">
+    2.2  VS Code自定义生成调试任务
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-launchjson" title="2.2.1 生成的launch.json" class="md-nav__link">
+    2.2.1 生成的launch.json
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-launchjson" title="2.2.2 launch.json重要项修改添加" class="md-nav__link">
+    2.2.2 launch.json重要项修改添加
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223-launchjson" title="2.2.3 launch.json参考" class="md-nav__link">
+    2.2.3 launch.json参考
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" title="3. 编译&amp;调试" class="md-nav__link">
+    3. 编译&amp;调试
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3-1" title="3. 1 调试前的准备" class="md-nav__link">
+    3. 1 调试前的准备
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" title="3.2 开始调试" class="md-nav__link">
+    3.2 开始调试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" title="4. 演示效果" class="md-nav__link">
+    4. 演示效果
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -844,6 +1047,27 @@ clean:
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../手把手教你从单片机移植驱动到ARMLinux上/" title="驱动第五天" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                驱动第五天
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
