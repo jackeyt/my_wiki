@@ -1,2 +1,17 @@
 site_name: jackeyt wiki
+theme:
+    name: 'material'
+    
+site_author: jackeyt
 
+nav:
+- 介绍: index.md
+- ARM_Linux驱动入门:
+  - 驱动第一天: 驱动第一天---驱动基础.md
+  - 驱动第二天: 驱动第二天---中断.md
+  - 驱动第三天: 驱动第三天---总线.md
+  - 总线的横向对比表: 三种总线的横向对比表.md
+  - 驱动第四天: ARMLinux设备树.md
+  - 驱动第五天: 手把手教你从单片机移植驱动到ARMLinux上.md
+- ARM_Linux应用开发:
+  - 0.IDE环境搭建: VSCode搭建ARMLinuxMakefile工程IDE.md
