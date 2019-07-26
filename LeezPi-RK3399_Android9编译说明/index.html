@@ -1,0 +1,527 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+        <meta name="author" content="jackeyt">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
+    
+    
+      
+        <title>LeezPi-RK3399_Android9固件编译 - jackeyt wiki</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.0284f74d.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#leezpi-rk3399_android9" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="jackeyt wiki" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              jackeyt wiki
+            </span>
+            <span class="md-header-nav__topic">
+              
+                LeezPi-RK3399_Android9固件编译
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="jackeyt wiki" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    jackeyt wiki
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="介绍" class="md-nav__link">
+      介绍
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      ARM_Linux驱动入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        ARM_Linux驱动入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../驱动第一天---驱动基础/" title="驱动第一天" class="md-nav__link">
+      驱动第一天
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../驱动第二天---中断/" title="驱动第二天" class="md-nav__link">
+      驱动第二天
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../驱动第三天---总线/" title="驱动第三天" class="md-nav__link">
+      驱动第三天
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../三种总线的横向对比表/" title="总线的横向对比表" class="md-nav__link">
+      总线的横向对比表
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ARMLinux设备树/" title="驱动第四天" class="md-nav__link">
+      驱动第四天
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../手把手教你从单片机移植驱动到ARMLinux上/" title="驱动第五天" class="md-nav__link">
+      驱动第五天
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      ARM_Linux应用开发
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        ARM_Linux应用开发
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../VSCode搭建ARMLinuxMakefile工程IDE/" title="0.IDE环境搭建" class="md-nav__link">
+      0.IDE环境搭建
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="准备工作" class="md-nav__link">
+    准备工作
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="编译" class="md-nav__link">
+    编译
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="leezpi-rk3399_android9">LeezPi-RK3399_Android9固件编译</h1>
+<div class="toc">
+<ul>
+<li><a href="#leezpi-rk3399_android9">LeezPi-RK3399_Android9固件编译</a><ul>
+<li><a href="#_1">准备工作</a></li>
+<li><a href="#_2">编译</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="_1">准备工作</h2>
+<p>编译 Android 对机器的配置要求较高：</p>
+<ul>
+<li>64 位 CPU</li>
+<li>16GB 物理内存+交换内存</li>
+<li>30GB 空闲的磁盘空间用于构建，源码树另外占用大约 25GB</li>
+</ul>
+<p>官方推荐 Ubuntu 14.04 操作系统，经测试，Ubuntu 12.04 也可以编译运行成功，只需要满足<a href="http://source.android.com/source/building.html">http://source.android.com/source/building.html</a>里的软硬件配置即可。编译环境的初始化可参考<a href="http://source.android.com/source/initializing.html">http://source.android.com/source/initializing.html</a>。</p>
+<ul>
+<li>安装 OpenJDK 8:
+ ~~~
+sudo apt-get install openjdk-8-jdk</li>
+</ul>
+<pre><code>提示：安装 openjdk-8-jdk，会更改 JDK 的默认链接，这时可用：
+</code></pre>
+
+<p>$ sudo update-alternatives --config java
+$ sudo update-alternatives --config javac</p>
+<pre><code>
+来切换 JDK 版本。SDK 在找不到操作系统默认 JDK 的时候会使用内部设定的 JDK 路径，因此，为了让同一台机器可以编译 Android 5.1 及之前的版本，去掉链接更方便：
+</code></pre>
+
+<p>$ sudo /var/lib/dpkg/info/openjdk-8-jdk:amd64.prerm remove   </p>
+<pre><code>*   Ubuntu 12.04 软件包安装：
+
+</code></pre>
+
+<p>sudo apt-get install git gnupg flex bison gperf build-essential \
+zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev \
+libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 \
+g++-multilib mingw32 tofrodos gcc-multilib ia32-libs \
+python-markdown libxml2-utils xsltproc zlib1g-dev:i386 \
+lzop libssl1.0.0 libssl-dev</p>
+<pre><code>
+*   Ubuntu 14.04 软件包安装：
+
+</code></pre>
+
+<p>sudo apt-get install git-core gnupg flex bison gperf libsdl1.2-dev \
+libesd0-dev libwxgtk2.8-dev squashfs-tools build-essential zip curl \
+libncurses5-dev zlib1g-dev pngcrush schedtool libxml2 libxml2-utils \
+xsltproc lzop libc6-dev schedtool g++-multilib lib32z1-dev lib32ncurses5-dev \
+lib32readline-gplv2-dev gcc-multilib libswitch-perl \
+libssl1.0.0 libssl-dev <br />
+~~~</p>
+<ul>
+<li>Ubuntu 18.04 软件包安装：</li>
+</ul>
+<pre><code>sudo apt-get install libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-dev g++-multilib \
+git flex bison gperf build-essential libncurses5-dev:i386 \
+dpkg-dev libsdl1.2-dev libesd0-dev \
+git-core gnupg flex bison gperf build-essential \
+zip curl zlib1g-dev gcc-multilib g++-multilib \
+libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev \
+libgl1-mesa-dev libxml2-utils xsltproc unzip m4 lib32z-dev ccache \
+make make-guile  tofrodos python-markdown libxml2-utils xsltproc zlib1g-dev:i386
+</code></pre>
+
+<h2 id="_2">编译</h2>
+<ul>
+<li>设置环境</li>
+</ul>
+<pre><code>$ source build/envsetup.sh 
+</code></pre>
+
+<ul>
+<li>选择要编译的项目chestnut××××</li>
+</ul>
+<pre><code>$ lunch
+</code></pre>
+
+<ul>
+<li>使用脚本编译
+    下面是编译参数的说明</li>
+</ul>
+<pre><code>./build_leez.sh
+</code></pre>
+
+<pre><code>USAGE: [-S] [-U] [-K] [-A] [-p] [-o] [-u] [-v VERSION_NAME]  
+No ARGS means use default build option                  
+       -S = build image which boot from sd card               
+       -U = build uboot                                 
+       -K = build kernel                                
+       -A = build android                               
+       -p = will build packaging in IMAGE               
+       -o = build OTA package                           
+       -u = build update.img                            
+       -v = build android with 'user' or 'userdebug'
+</code></pre>
+
+<ul>
+<li>如果是编译SD卡启动的Image，一定要带-S参数。例如：
+编译 uboot、kernel、android，并打包为update.img</li>
+</ul>
+<pre><code>    ./build_leez.sh -SUKAu
+</code></pre>
+
+<ul>
+<li>仅编译 kernel 和android 并打包为update.img</li>
+</ul>
+<pre><code>    ./build_leez.sh -SKAu
+</code></pre>
+
+<ul>
+<li>如果是编译emmc启动的image，不用带-S 参数。其它用法同上述。</li>
+</ul>
+<p>特别注意，sd卡启动和emmc启动，其kernel、recovery、fstab 都有区别。所以切换编译时，务必要重编 kernel 和 android, 就是说-KA 参数一定要有。</p>
+<p>Note: android9.0因为SD卡和emmc兼容，所以不需要在编译时添加-S参数</p>
+<p><img alt="" src="../images/编译安卓9过程.jpg" />
+<img alt="" src="../images/安卓9编译完成.jpg" />
+<img alt="" src="../images/安卓9编译完成2.jpg" />
+生成的固件在
+ls ./rockdev/Image-chestnut/update.img</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.245445c6.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>
