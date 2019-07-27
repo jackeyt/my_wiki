@@ -442,28 +442,24 @@
 <ul>
 <li>https方式</li>
 </ul>
-<p><code>shel
-  git clone https://github.com/leez-SBC/repo.git</code></p>
+<p><code>git clone https://github.com/leez-SBC/repo.git</code></p>
 <h3 id="2">2. 初始化仓库</h3>
 <ul>
 <li>创建leez-sdk 目录</li>
 </ul>
-<p><code>shell
-  mkdir leez-sdk &amp;&amp; cd leez-sdk</code></p>
+<p><code>mkdir leez-sdk &amp;&amp; cd leez-sdk</code></p>
 <p><strong>Note: 使用上面步骤获取到的repo</strong></p>
 <ul>
 <li>初始化repo仓库</li>
 </ul>
-<p><code>shell
-  ../repo/repo init \
+<p><code>../repo/repo init \
   --repo-url=https://github.com/leez-SBC/repo \
   -u https://github.com/leez-SBC/manifests \
   -b master \
   -m rk3399_linux_release.xml</code></p>
 <h3 id="3">3. 同步代码</h3>
 <p><strong>Note: 使用上面步骤获取到的repo</strong></p>
-<p><code>shell
-  ../repo/repo sync</code></p>
+<p><code>../repo/repo sync</code></p>
 <h3 id="4">4.配置编译环境</h3>
 <p>安装编译所需工具，确保工具都正确安装：</p>
 <pre><code>sudo apt-get install repo git-core gitk git-gui gcc-arm-linux-gnueabihf u-boot-tools device-tree-compiler \

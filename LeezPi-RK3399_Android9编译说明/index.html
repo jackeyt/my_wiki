@@ -389,6 +389,27 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_3" title="编译过程" class="md-nav__link">
+    编译过程
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" title="编译完成" class="md-nav__link">
+    编译完成
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" title="编译生成固件" class="md-nav__link">
+    编译生成固件
+  </a>
+  
+</li>
+      
       
       
       
@@ -439,6 +460,27 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_3" title="编译过程" class="md-nav__link">
+    编译过程
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" title="编译完成" class="md-nav__link">
+    编译完成
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" title="编译生成固件" class="md-nav__link">
+    编译生成固件
+  </a>
+  
+</li>
+      
       
       
       
@@ -462,6 +504,9 @@
 <li><a href="#leezpi-rk3399_android9">LeezPi-RK3399_Android9固件编译</a><ul>
 <li><a href="#_1">准备工作</a></li>
 <li><a href="#_2">编译</a></li>
+<li><a href="#_3">编译过程</a></li>
+<li><a href="#_4">编译完成</a></li>
+<li><a href="#_5">编译生成固件</a></li>
 </ul>
 </li>
 </ul>
@@ -475,42 +520,38 @@
 </ul>
 <p>官方推荐 Ubuntu 14.04 操作系统，经测试，Ubuntu 12.04 也可以编译运行成功，只需要满足<a href="http://source.android.com/source/building.html">http://source.android.com/source/building.html</a>里的软硬件配置即可。编译环境的初始化可参考<a href="http://source.android.com/source/initializing.html">http://source.android.com/source/initializing.html</a>。</p>
 <ul>
-<li>安装 OpenJDK 8:
- ~~~
-sudo apt-get install openjdk-8-jdk</li>
+<li>安装 OpenJDK 8:</li>
 </ul>
-<pre><code>提示：安装 openjdk-8-jdk，会更改 JDK 的默认链接，这时可用：
+<pre><code>sudo apt-get install openjdk-8-jdk
 </code></pre>
 
-<p>$ sudo update-alternatives --config java
-$ sudo update-alternatives --config javac</p>
-<pre><code>
-来切换 JDK 版本。SDK 在找不到操作系统默认 JDK 的时候会使用内部设定的 JDK 路径，因此，为了让同一台机器可以编译 Android 5.1 及之前的版本，去掉链接更方便：
+<p>提示：安装 openjdk-8-jdk，会更改 JDK 的默认链接，这时可用：</p>
+<pre><code>$ sudo update-alternatives --config java
+$ sudo update-alternatives --config javac
 </code></pre>
 
-<p>$ sudo /var/lib/dpkg/info/openjdk-8-jdk:amd64.prerm remove   </p>
-<pre><code>*   Ubuntu 12.04 软件包安装：
-
-</code></pre>
-
-<p>sudo apt-get install git gnupg flex bison gperf build-essential \
+<p>来切换 JDK 版本。SDK 在找不到操作系统默认 JDK 的时候会使用内部设定的 JDK 路径，因此，为了让同一台机器可以编译 Android 5.1 及之前的版本，去掉链接更方便：</p>
+<p><code>$ sudo /var/lib/dpkg/info/openjdk-8-jdk:amd64.prerm remove</code>   </p>
+<p>Ubuntu 12.04 软件包安装：</p>
+<pre><code>sudo apt-get install git gnupg flex bison gperf build-essential \
 zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev \
 libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 \
 g++-multilib mingw32 tofrodos gcc-multilib ia32-libs \
 python-markdown libxml2-utils xsltproc zlib1g-dev:i386 \
-lzop libssl1.0.0 libssl-dev</p>
-<pre><code>
-*   Ubuntu 14.04 软件包安装：
-
+lzop libssl1.0.0 libssl-dev
 </code></pre>
 
-<p>sudo apt-get install git-core gnupg flex bison gperf libsdl1.2-dev \
+<ul>
+<li>Ubuntu 14.04 软件包安装：</li>
+</ul>
+<pre><code>sudo apt-get install git-core gnupg flex bison gperf libsdl1.2-dev \
 libesd0-dev libwxgtk2.8-dev squashfs-tools build-essential zip curl \
 libncurses5-dev zlib1g-dev pngcrush schedtool libxml2 libxml2-utils \
 xsltproc lzop libc6-dev schedtool g++-multilib lib32z1-dev lib32ncurses5-dev \
 lib32readline-gplv2-dev gcc-multilib libswitch-perl \
-libssl1.0.0 libssl-dev <br />
-~~~</p>
+libssl1.0.0 libssl-dev   
+</code></pre>
+
 <ul>
 <li>Ubuntu 18.04 软件包安装：</li>
 </ul>
@@ -574,11 +615,15 @@ No ARGS means use default build option
 </ul>
 <p>特别注意，sd卡启动和emmc启动，其kernel、recovery、fstab 都有区别。所以切换编译时，务必要重编 kernel 和 android, 就是说-KA 参数一定要有。</p>
 <p>Note: android9.0因为SD卡和emmc兼容，所以不需要在编译时添加-S参数</p>
-<p><img alt="" src="../images/编译安卓9过程.jpg" />
-<img alt="" src="../images/安卓9编译完成.jpg" />
-<img alt="" src="../images/安卓9编译完成2.jpg" />
-生成的固件在
-ls ./rockdev/Image-chestnut/update.img</p>
+<h2 id="_3">编译过程</h2>
+<p><img alt="" src="../images/编译安卓9过程.jpg" /></p>
+<h2 id="_4">编译完成</h2>
+<p><img alt="" src="../images/安卓9编译完成.jpg" />
+<img alt="" src="../images/安卓9编译完成2.jpg" /></p>
+<h2 id="_5">编译生成固件</h2>
+<p>生成的固件在</p>
+<pre><code>./rockdev/Image-chestnut/update.img
+</code></pre>
                 
                   
                 
