@@ -337,6 +337,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../LeezPi-RK3399_开箱/" title="0.开箱" class="md-nav__link">
+      0.开箱
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../LeezPi-RK3399_SDK使用/" title="1.SDK使用说明" class="md-nav__link">
       1.SDK使用说明
     </a>
@@ -522,9 +534,7 @@
 <ul>
 <li>安装 OpenJDK 8:</li>
 </ul>
-<pre><code>sudo apt-get install openjdk-8-jdk
-</code></pre>
-
+<p><code>sudo apt-get install openjdk-8-jdk</code></p>
 <p>提示：安装 openjdk-8-jdk，会更改 JDK 的默认链接，这时可用：</p>
 <pre><code>$ sudo update-alternatives --config java
 $ sudo update-alternatives --config javac
@@ -532,7 +542,9 @@ $ sudo update-alternatives --config javac
 
 <p>来切换 JDK 版本。SDK 在找不到操作系统默认 JDK 的时候会使用内部设定的 JDK 路径，因此，为了让同一台机器可以编译 Android 5.1 及之前的版本，去掉链接更方便：</p>
 <p><code>$ sudo /var/lib/dpkg/info/openjdk-8-jdk:amd64.prerm remove</code>   </p>
-<p>Ubuntu 12.04 软件包安装：</p>
+<ul>
+<li>Ubuntu 12.04 软件包安装：</li>
+</ul>
 <pre><code>sudo apt-get install git gnupg flex bison gperf build-essential \
 zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev \
 libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 \
