@@ -64,14 +64,68 @@ liblz4-tool genext2fs lib32stdc++6
 
 选择开发板对应的配置文件。配置文件会链接到`device/rockchip/.BoardConfig.mk`，查看该文件可确认当前所使用的配置文件：
 
-~~~
-./build.sh firefly-rk3399.mk
+```
+./build.sh BoardConfig_debian.mk
 
-# 文件路径在 `device/rockchip/rk3399/firefly-rk3399.mk`
+# 文件路径在 `device/rockchip/rk3399/BoardConfig_debian.mk`
 
-~~~
+```
 
-`.mk`文件默认配置为编译 Buildroot 固件，下面对 Buildroot 相关配置进行说明：
+配置文件`device/rockchip/rk3399/BoardConfig_debian.mk`如下：
+
+```
+#!/bin/bash
+
+# Target arch
+export RK_ARCH=arm64
+# Uboot defconfig
+export RK_UBOOT_DEFCONFIG=rk3399
+# Kernel defconfig
+export RK_KERNEL_DEFCONFIG=rockchip_linux_defconfig
+# Kernel dts
+export RK_KERNEL_DTS=rk3399-leez-linux
+# boot image type
+export RK_BOOT_IMG=boot.img
+# kernel image path
+export RK_KERNEL_IMG=kernel/arch/arm64/boot/Image
+# parameter for GPT table
+export RK_PARAMETER=parameter-buildroot.txt
+# Buildroot config
+export RK_CFG_BUILDROOT=rockchip_rk3399
+# Recovery config
+export RK_CFG_RECOVERY=rockchip_rk3399_recovery
+# ramboot config
+export RK_CFG_RAMBOOT=
+# Pcba config
+export RK_CFG_PCBA=rockchip_rk3399_pcba
+# Build jobs
+export RK_JOBS=12
+# target chip
+export RK_TARGET_PRODUCT=rk3399
+# Set rootfs type, including ext2 ext4 squashfs
+export RK_ROOTFS_TYPE=ext4
+# yocto machine
+export RK_YOCTO_MACHINE=rockchip-rk3399-sapphire-excavator
+# rootfs image path
+export RK_ROOTFS_IMG=rockdev/rootfs.${RK_ROOTFS_TYPE}
+# Set oem partition type, including ext2 squashfs
+export RK_OEM_FS_TYPE=ext2
+# Set userdata partition type, including ext2, fat
+export RK_USERDATA_FS_TYPE=ext2
+# Set flash type. support <emmc, nand, spi_nand, spi_nor>
+export RK_STORAGE_TYPE=emmc
+#OEM config
+export RK_OEM_DIR=oem_normal
+#userdata config
+export RK_USERDATA_DIR=userdata_normal
+#misc image
+export RK_MISC=blank-misc.img
+#choose enable distro module
+export RK_DISTRO_MODULE=
+```
+
+
+`BoardConfig_debian.mk`文件默认配置为编译 Buildroot 固件，下面对 Buildroot 相关配置进行说明：
 
 ~~~
 # Buildroot config
@@ -118,6 +172,13 @@ export RK_ROOTFS_IMG=buildroot/output/$RK_CFG_BUILDROOT/images/rootfs.$RK_ROOTFS
 
 ~~~
 
+*   编译 kernel modules
+
+~~~
+./build.sh modules
+
+~~~
+
 *   编译 u-boot
 
 ~~~
@@ -127,13 +188,47 @@ export RK_ROOTFS_IMG=buildroot/output/$RK_CFG_BUILDROOT/images/rootfs.$RK_ROOTFS
 
 *   编译 rootfs
 
+1.  编译 Buildroot rootfs
+
 编译 Buildroot 根文件系统，将会在`buildroot/output`生成编译输出目录：
 
 ~~~
 ./build.sh buildroot
 
 # 注：确保作为普通用户编译 Buildroot 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
+~~~
 
+2.  编译 debian9 rootfs
+
+~~~
+./build.sh debian
+
+# 注：确保作为普通用户编译 debian9 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
+~~~
+
+3.  编译 debian10 rootfs
+
+~~~
+./build.sh distro
+
+# 注：确保作为普通用户编译 debian10 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
+~~~
+
+4.  编译 yocto rootfs
+
+~~~
+./build.sh yocto
+
+# 注：确保作为普通用户编译 yocto 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
+~~~
+
+
+*   编译 recovery
+
+~~~
+./build.sh recovery
+
+# 注：确保作为普通用户编译 yocto 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
 ~~~
 
 ## 5.4固件打包
