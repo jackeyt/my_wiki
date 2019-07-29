@@ -38,11 +38,21 @@
 
 ### 3. 同步代码
 
-  **Note: 使用上面步骤获取到的repo**
+**Note: 使用上面步骤获取到的repo**
 
-  ```
-  ../repo/repo sync
-  ```
+```
+../repo/repo sync
+```
+**Note: 使用上面步骤获取到的repo**
+```
+#! /bin/bash
+../repo/repo sync
+while [ $? -ne 0 ]; 
+do
+        ../repo/repo sync
+        done
+```
+
 ### 4.配置编译环境
 
 安装编译所需工具，确保工具都正确安装：
