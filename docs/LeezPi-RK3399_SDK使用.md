@@ -43,7 +43,8 @@
 ```
 ../repo/repo sync
 ```
-**Note: 使用上面步骤获取到的repo**
+**Note: 上面命令经常会因网络而中断，使用以下脚本可保持同步**
+
 ```
 #! /bin/bash
 ../repo/repo sync
