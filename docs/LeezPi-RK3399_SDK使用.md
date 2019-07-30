@@ -165,7 +165,7 @@ export RK_ROOTFS_IMG=buildroot/output/$RK_CFG_BUILDROOT/images/rootfs.$RK_ROOTFS
 
 执行编译命令时，将会根据`.mk`文件进行编译。
 
-### 5.2全自动编译
+#### 5.2全自动编译
 
 全自动编译会编译并打包固件`update.img`，生成固件目录`rockdev/`：
 
@@ -174,7 +174,7 @@ export RK_ROOTFS_IMG=buildroot/output/$RK_CFG_BUILDROOT/images/rootfs.$RK_ROOTFS
 
 ~~~
 
-### 5.3部分编译
+#### 5.3部分编译
 
 *   编译 kernel
 
