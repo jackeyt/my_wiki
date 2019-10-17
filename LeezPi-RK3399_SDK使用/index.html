@@ -381,6 +381,54 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      RK1808S_AI计算棒试玩
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        RK1808S_AI计算棒试玩
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../RK1808S_AI计算棒—0.开箱/" title="0.开箱" class="md-nav__link">
+      0.开箱
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../RK1808S_AI计算棒—1.搭建Windows开发环境/" title="1.开发环境搭建" class="md-nav__link">
+      1.开发环境搭建
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -471,7 +519,18 @@
   -m rk3399_linux_release.xml</code></p>
 <h3 id="3">3. 同步代码</h3>
 <p><strong>Note: 使用上面步骤获取到的repo</strong></p>
-<p><code>../repo/repo sync</code></p>
+<pre><code>../repo/repo sync
+</code></pre>
+
+<p><strong>Note: 上面命令经常会因网络而中断，使用以下脚本可保持同步</strong></p>
+<pre><code>#! /bin/bash
+../repo/repo sync
+while [ $? -ne 0 ]; 
+do
+        ../repo/repo sync
+        done
+</code></pre>
+
 <h3 id="4">4.配置编译环境</h3>
 <p>安装编译所需工具，确保工具都正确安装：</p>
 <pre><code>sudo apt-get install repo git-core gitk git-gui gcc-arm-linux-gnueabihf u-boot-tools device-tree-compiler \
@@ -487,13 +546,64 @@ liblz4-tool genext2fs lib32stdc++6
 <h3 id="5sdk">5.编译SDK</h3>
 <h4 id="51">5.1配置编译文件</h4>
 <p>选择开发板对应的配置文件。配置文件会链接到<code>device/rockchip/.BoardConfig.mk</code>，查看该文件可确认当前所使用的配置文件：</p>
-<pre><code>./build.sh firefly-rk3399.mk
+<pre><code>./build.sh BoardConfig_debian.mk
 
-# 文件路径在 `device/rockchip/rk3399/firefly-rk3399.mk`
+# 文件路径在 `device/rockchip/rk3399/BoardConfig_debian.mk`
 
 </code></pre>
 
-<p><code>.mk</code>文件默认配置为编译 Buildroot 固件，下面对 Buildroot 相关配置进行说明：</p>
+<p>配置文件<code>device/rockchip/rk3399/BoardConfig_debian.mk</code>如下：</p>
+<pre><code>#!/bin/bash
+
+# Target arch
+export RK_ARCH=arm64
+# Uboot defconfig
+export RK_UBOOT_DEFCONFIG=rk3399
+# Kernel defconfig
+export RK_KERNEL_DEFCONFIG=rockchip_linux_defconfig
+# Kernel dts
+export RK_KERNEL_DTS=rk3399-leez-linux
+# boot image type
+export RK_BOOT_IMG=boot.img
+# kernel image path
+export RK_KERNEL_IMG=kernel/arch/arm64/boot/Image
+# parameter for GPT table
+export RK_PARAMETER=parameter-buildroot.txt
+# Buildroot config
+export RK_CFG_BUILDROOT=rockchip_rk3399
+# Recovery config
+export RK_CFG_RECOVERY=rockchip_rk3399_recovery
+# ramboot config
+export RK_CFG_RAMBOOT=
+# Pcba config
+export RK_CFG_PCBA=rockchip_rk3399_pcba
+# Build jobs
+export RK_JOBS=12
+# target chip
+export RK_TARGET_PRODUCT=rk3399
+# Set rootfs type, including ext2 ext4 squashfs
+export RK_ROOTFS_TYPE=ext4
+# yocto machine
+export RK_YOCTO_MACHINE=rockchip-rk3399-sapphire-excavator
+# rootfs image path
+export RK_ROOTFS_IMG=rockdev/rootfs.${RK_ROOTFS_TYPE}
+# Set oem partition type, including ext2 squashfs
+export RK_OEM_FS_TYPE=ext2
+# Set userdata partition type, including ext2, fat
+export RK_USERDATA_FS_TYPE=ext2
+# Set flash type. support &lt;emmc, nand, spi_nand, spi_nor&gt;
+export RK_STORAGE_TYPE=emmc
+#OEM config
+export RK_OEM_DIR=oem_normal
+#userdata config
+export RK_USERDATA_DIR=userdata_normal
+#misc image
+export RK_MISC=blank-misc.img
+#choose enable distro module
+export RK_DISTRO_MODULE=
+</code></pre>
+
+<p><code>BoardConfig_debian.mk</code>文件默认配置为编译 Buildroot 固件，下面对 Buildroot 相关配置进行说明：</p>
 <pre><code># Buildroot config
 export RK_CFG_BUILDROOT=rockchip_rk3399     # Buildroot 根文件系统配置文件
 
@@ -532,6 +642,13 @@ export RK_ROOTFS_IMG=buildroot/output/$RK_CFG_BUILDROOT/images/rootfs.$RK_ROOTFS
 </code></pre>
 
 <ul>
+<li>编译 kernel modules</li>
+</ul>
+<pre><code>./build.sh modules
+
+</code></pre>
+
+<ul>
 <li>编译 u-boot</li>
 </ul>
 <pre><code>./build.sh uboot
@@ -539,13 +656,49 @@ export RK_ROOTFS_IMG=buildroot/output/$RK_CFG_BUILDROOT/images/rootfs.$RK_ROOTFS
 </code></pre>
 
 <ul>
-<li>编译 rootfs</li>
+<li>
+<p>编译 rootfs</p>
+</li>
+<li>
+<p>编译 Buildroot rootfs</p>
+</li>
 </ul>
 <p>编译 Buildroot 根文件系统，将会在<code>buildroot/output</code>生成编译输出目录：</p>
 <pre><code>./build.sh buildroot
 
 # 注：确保作为普通用户编译 Buildroot 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
+</code></pre>
 
+<ol>
+<li>编译 debian9 rootfs</li>
+</ol>
+<pre><code>./build.sh debian
+
+# 注：确保作为普通用户编译 debian9 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
+</code></pre>
+
+<ol>
+<li>编译 debian10 rootfs</li>
+</ol>
+<pre><code>./build.sh distro
+
+# 注：确保作为普通用户编译 debian10 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
+</code></pre>
+
+<ol>
+<li>编译 yocto rootfs</li>
+</ol>
+<pre><code>./build.sh yocto
+
+# 注：确保作为普通用户编译 yocto 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
+</code></pre>
+
+<ul>
+<li>编译 recovery</li>
+</ul>
+<pre><code>./build.sh recovery
+
+# 注：确保作为普通用户编译 yocto 根文件系统，避免不必要的错误。编译过程中会自动下载所需软件包，请保持联网状态
 </code></pre>
 
 <h2 id="54">5.4固件打包</h2>
