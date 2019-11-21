@@ -38,7 +38,7 @@
     
     
       
-        <title>RK1808S_AI计算棒—搭建Windows开发环境 - jackeyt wiki</title>
+        <title>1.开发环境搭建 - jackeyt wiki</title>
       
     
     
@@ -103,7 +103,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                RK1808S_AI计算棒—搭建Windows开发环境
+                1.开发环境搭建
               
             </span>
           
@@ -374,10 +374,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
     
     <label class="md-nav__link" for="nav-5">
       RK1808S_AI计算棒试玩
@@ -398,6 +400,158 @@
     <a href="../RK1808S_AI计算棒—0.开箱/" title="0.开箱" class="md-nav__link">
       0.开箱
     </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        1.开发环境搭建
+      </label>
+    
+    <a href="./" title="1.开发环境搭建" class="md-nav__link md-nav__link--active">
+      1.开发环境搭建
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0" title="0、引言" class="md-nav__link">
+    0、引言
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anaconda3tensorflow115python36rknnvscodeopencv-python" title="本文将实现 Anaconda3+TensorFlow(1.15)+Python3.6+RKNN(计算棒专用接口)+VSCode+OpenCV-Python" class="md-nav__link">
+    本文将实现 Anaconda3+TensorFlow(1.15)+Python3.6+RKNN(计算棒专用接口)+VSCode+OpenCV-Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows" title="在Windows下面实现的可断点仿真环境搭建" class="md-nav__link">
+    在Windows下面实现的可断点仿真环境搭建
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1anaconda3" title="1、安装虚拟环境Anaconda3" class="md-nav__link">
+    1、安装虚拟环境Anaconda3
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" title="1.1、下载安装" class="md-nav__link">
+    1.1、下载安装
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" title="1.2、下载完成" class="md-nav__link">
+    1.2、下载完成
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" title="1.3、创建专用虚拟环境" class="md-nav__link">
+    1.3、创建专用虚拟环境
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2tensorflow" title="2、安装TensorFlow" class="md-nav__link">
+    2、安装TensorFlow
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3opencv-python" title="3、安装OpenCV-Python" class="md-nav__link">
+    3、安装OpenCV-Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4rknnaipy" title="4、安装RKNN(AI计算棒的py接口)" class="md-nav__link">
+    4、安装RKNN(AI计算棒的py接口)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5vscode" title="5、安装VSCode" class="md-nav__link">
+    5、安装VSCode
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6vscode" title="6、VSCode使用集成化环境" class="md-nav__link">
+    6、VSCode使用集成化环境
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-f5" title="进入单步调试界面，点击界面上的“调试”-&gt;“启动调试”或者快捷F5即可，一键即可进入调试环境：" class="md-nav__link">
+    进入单步调试界面，点击界面上的“调试”-&gt;“启动调试”或者快捷F5即可，一键即可进入调试环境：
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -681,14 +835,14 @@ conda config --set show_channel_urls yes
 <ul>
 <li>打开VSCode并新增一个py文件，同时选择前文搭建好的版本即可：</li>
 </ul>
-<p><img alt="" src="images/RK1808/VSCode1.png" /></p>
+<p><img alt="" src="../images/RK1808/Prompt_Y5.png" /></p>
 <ul>
 <li>书写相关代码时可以看到相应的接口提示：</li>
 </ul>
-<p><img alt="" src="images/RK1808/VSCode2.png" /></p>
-<p><img alt="" src="images/RK1808/VSCode3.png" /></p>
+<p><img alt="" src="../images/RK1808/Prompt_Y6.png" /></p>
+<p><img alt="" src="../images/RK1808/Prompt_Y7.png" /></p>
 <h3 id="-f5">进入单步调试界面，点击界面上的“调试”-&gt;“启动调试”或者快捷F5即可，一键即可进入调试环境：</h3>
-<p><img alt="" src="images/RK1808/VSCode4.png" /></p>
+<p><img alt="" src="../images/RK1808/Prompt_Y8.png" /></p>
                 
                   
                 
@@ -705,6 +859,27 @@ conda config --set show_channel_urls yes
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../RK1808S_AI计算棒—0.开箱/" title="0.开箱" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                0.开箱
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
