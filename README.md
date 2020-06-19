@@ -1,4 +1,4 @@
-#提交说明
+# 提交说明
 
 * 主干分支：master
 * 分支：gh-pages
@@ -10,12 +10,10 @@
 * 3、提交master 分支
 
 ```
-
 	git checkout master
 	git add .
 	git commit -m "...."
 	git push origin master
-
 ```
 
 
@@ -25,11 +23,9 @@
 * 2、切换gh-pages分支，提交等
 
 ```
-
 	git checkout gh-pages
 	echo "jackeyt.cn" > CNAME
 	git add .
 	git commit -m "...."
 	git push origin master
-
 ```
