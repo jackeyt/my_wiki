@@ -38,7 +38,7 @@
     
     
       
-        <title>总线的横向对比表 - jackeyt wiki</title>
+        <title>RK1808S_AI计算棒—RK1808被动模式下mobilenet_v1模型测试 - jackeyt wiki</title>
       
     
     
@@ -77,6 +77,10 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
+      <a href="#rk1808s_airk1808mobilenet_v1" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
@@ -99,7 +103,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                总线的横向对比表
+                RK1808S_AI计算棒—RK1808被动模式下mobilenet_v1模型测试
               
             </span>
           
@@ -178,12 +182,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
     
     <label class="md-nav__link" for="nav-2">
       ARM_Linux驱动入门
@@ -235,18 +237,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-    <a href="./" title="总线的横向对比表" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../三种总线的横向对比表/" title="总线的横向对比表" class="md-nav__link">
       总线的横向对比表
     </a>
-    
   </li>
 
         
@@ -478,24 +473,187 @@
               </div>
             
             
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0" title="0、引言" class="md-nav__link">
+    0、引言
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" title="被动模式开发流程简介" class="md-nav__link">
+    被动模式开发流程简介
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobilenet_v1windowsmobilenet_v1" title="这里以mobilenet_v1为例，在搭建好的windows环境下使用mobilenet_v1模型，示例实现的功能是对一张图片进行特征提取，并识别这张图片所属分类。" class="md-nav__link">
+    这里以mobilenet_v1为例，在搭建好的windows环境下使用mobilenet_v1模型，示例实现的功能是对一张图片进行特征提取，并识别这张图片所属分类。
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anaconda3tensorflow115python36rknnvscodeopencv-pythonmobilenet_v1" title="本文将实现基于上篇文章实现的 Anaconda3+TensorFlow(1.15)+Python3.6+RKNN(计算棒专用接口)+VSCode+OpenCV-Python环境下的mobilenet_v1模型测试" class="md-nav__link">
+    本文将实现基于上篇文章实现的 Anaconda3+TensorFlow(1.15)+Python3.6+RKNN(计算棒专用接口)+VSCode+OpenCV-Python环境下的mobilenet_v1模型测试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" title="1、下载源代码" class="md-nav__link">
+    1、下载源代码
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" title="2、源代码目录说明" class="md-nav__link">
+    2、源代码目录说明
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" title="3、运行测试：" class="md-nav__link">
+    3、运行测试：
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" title="4、结果说明：" class="md-nav__link">
+    4、结果说明：
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
                 
                 
-                  <h1>总线的横向对比表</h1>
-                
-                <p><img alt="" src="../images/QQ浏览器截图20180730223528.png" />
-<img alt="" src="../images/screenshot_1532961423615.png" />
-<img alt="" src="../images/screenshot_1532961465440.png" /></p>
-<p>从上述表格中，我们不难看出，总线：mybus(自己写的)，platform(平台总线)，IIC总线都是基于bus----driver----device的模型</p>
-<p><img alt="" src="../images/驱动驱动模型.png" /></p>
-<blockquote>
-<p>对于总线而言，无非就是从struct  bus_type派生出来的一个实例；
-对于driver而言，基本都是继承struct device_driver而扩展出来的；
-对于device而言，无非就是从struct device而扩展出来的。</p>
-</blockquote>
+                <h1 id="rk1808s_airk1808mobilenet_v1">RK1808S_AI计算棒—RK1808被动模式下mobilenet_v1模型测试</h1>
+<div class="toc">
+<ul>
+<li><a href="#rk1808s_airk1808mobilenet_v1">RK1808S_AI计算棒—RK1808被动模式下mobilenet_v1模型测试</a><ul>
+<li><a href="#0">0、引言</a><ul>
+<li><a href="#_1">被动模式开发流程简介</a></li>
+<li><a href="#mobilenet_v1windowsmobilenet_v1">这里以mobilenet_v1为例，在搭建好的windows环境下使用mobilenet_v1模型，示例实现的功能是对一张图片进行特征提取，并识别这张图片所属分类。</a></li>
+<li><a href="#anaconda3tensorflow115python36rknnvscodeopencv-pythonmobilenet_v1">本文将实现基于上篇文章实现的 Anaconda3+TensorFlow(1.15)+Python3.6+RKNN(计算棒专用接口)+VSCode+OpenCV-Python环境下的mobilenet_v1模型测试</a></li>
+</ul>
+</li>
+<li><a href="#1">1、下载源代码</a></li>
+<li><a href="#2">2、源代码目录说明</a></li>
+<li><a href="#3">3、运行测试：</a></li>
+<li><a href="#4">4、结果说明：</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="0">0、引言</h2>
+<h4 id="_1">被动模式开发流程简介</h4>
+<p>被动模式下：RK1808 人工智能计算棒是一个通用AI加速器。主机端通过RKNN-Toolkit将模型及前处理后的数据传输给RK1808 人工智能计算棒，RK1808 人工智能计算棒完成推理，并把结果返回主控端，主机端进行后处理以及显示等操作。
+更多关于被动模式开发流程的介绍，可以参考<a href="http://t.rock-chips.com/wiki.php?mod=view&amp;id=64">官网wiki
+</a></p>
+<h4 id="mobilenet_v1windowsmobilenet_v1">这里以mobilenet_v1为例，在搭建好的windows环境下使用mobilenet_v1模型，示例实现的功能是对一张图片进行特征提取，并识别这张图片所属分类。</h4>
+<h3 id="anaconda3tensorflow115python36rknnvscodeopencv-pythonmobilenet_v1">本文将实现基于上篇文章实现的 <code>Anaconda3</code>+<code>TensorFlow(1.15)</code>+<code>Python3.6</code>+<code>RKNN(计算棒专用接口)</code>+<code>VSCode</code>+<code>OpenCV-Python</code>环境下的mobilenet_v1模型测试</h3>
+<h2 id="1">1、下载源代码</h2>
+<p>从官方FTP文件服务器下载mobilenet_v1压缩包，并解压出来：</p>
+<pre><code>wget http://repo.rock-chips.com/rk1808/mobilenet_v1.tar.gz
+tar xvf mobilenet_v1.tar.gz //win使用右键解压
+</code></pre>
+<h2 id="2">2、源代码目录说明</h2>
+<p>以下是mobilenet_v1示例的目录结构及说明如下：</p>
+<p><img alt="" src="../images/RK1808/mob_1.png" /></p>
+<ul>
+<li>
+<p>dataset.txt: 包含测试图片路径的文本文件。</p>
+</li>
+<li>
+<p>dog_224x224.jpg: 作为mobilenet_v1示例的测试图片。</p>
+</li>
+<li>
+<p>mobilenet_v1.tflite: TensorFlow Lite模型文件。</p>
+</li>
+<li>
+<p>mobilenet_v1.rknn: rknn模型文件。由非rknn模型文件（这里是TensorFlow Lite模型）经过RKNN-Toolkit模型转换生成的该rknn模型文件。</p>
+</li>
+<li>
+<p>test.py: 示例运行脚本(包含rknn模型转换部分)。</p>
+</li>
+<li>
+<p>test_inference.py: 示例运行脚本（仅加载rknn模型进行推理）。</p>
+</li>
+</ul>
+<h2 id="3">3、运行测试：</h2>
+<p>使用VScode打开<code>test.py</code> 文件，如图所示，选择正确的运行环境：
+<img alt="" src="../images/RK1808/mob_2.png" /></p>
+<p>运行效果：</p>
+<pre><code>--&gt; config model
+done
+--&gt; Loading model
+done
+--&gt; Building model
+done
+--&gt; Export RKNN model
+done
+--&gt; Init runtime environment
+done
+--&gt; Running model
+mobilenet_v1
+-----TOP 5-----
+[156]: 0.8837890625
+[155]: 0.0677490234375
+[188 205]: 0.00867462158203125
+[188 205]: 0.00867462158203125
+[263]: 0.0057525634765625
+
+done
+--&gt; Begin evaluate model performance
+========================================================================
+   Performance
+========================================================================
+FPS: 136.30
+========================================================================
+
+done
+</code></pre>
+<p><img alt="" src="../images/RK1808/mob_3.png" /></p>
+<h2 id="4">4、结果说明：</h2>
+<p>根据以上执行结果可知，TOP5表示模型预测出来的排名前5的分类的结果，其中[156]表示狗的标签，0.8837890625表示预测为该标签的概率，可以看出预测结果为狗的可能性最大，从测试图片（dog_224x224.jpg）可以看出预测结果是准确的。</p>
                 
                   
                 
@@ -512,41 +670,6 @@
       
         
 <footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-        
-          <a href="../驱动第三天---总线/" title="驱动第三天" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
-            </div>
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                驱动第三天
-              </span>
-            </div>
-          </a>
-        
-        
-          <a href="../ARMLinux设备树/" title="驱动第四天" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                驱动第四天
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
