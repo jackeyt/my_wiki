@@ -16,7 +16,7 @@ nav:
 - ARM_Linux应用开发:
   - 0.IDE环境搭建: VSCode搭建ARMLinuxMakefile工程IDE.md
 - ARM_Linux内核开发:
-  - 0.IDE环境搭建[纯WIN]: VSCode搭建Linux Kernel单步调试IDE环境.md
+  - 0.IDE环境搭建[纯WIN]: VSCode搭建LinuxKernel单步调试IDE环境.md
 - 栗子派LeeZ—RK3399试玩:
   - 0.开箱: LeezPi-RK3399_开箱.md
   - 1.SDK使用说明: LeezPi-RK3399_SDK使用.md
