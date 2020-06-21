@@ -1,4 +1,4 @@
-# [首发][史上最详细]VSCode搭建Linux Kernel单步调试IDE环境
+# [首发][史上最详细][纯WIN10环境]VSCode搭建Linux Kernel单步调试IDE环境
 
 
 [TOC]
@@ -275,12 +275,242 @@ QEMU 虚拟机可以通过VirtIO-NET 技术来生成一个虚拟的网卡，并�
 ![](images/WSL_Code/start_debug.gif)
 
 
-### 3.4、一键调试
+### 3.4、更多GDB调试技巧
+
+在终端界面栏，切换至调试控制台;输入命令，如：`-exec info registers`，即可查看调试过中的的寄存器
+
+![](images/WSL_Code/16.png)
 
 
 ## 4.单步调试应用层+内核
 
+经过前面0~3的铺垫，我们已经具备了以下三个条件：
+1、完整的内核（编译环境、调试环）+完整的Rootfs
+2、完整的qemu环境,包括：网络共享、桥接等，可以随时将主机的文件共享给qemu（本地的kmodules文件夹《---》虚拟机里面的mnt文件夹）
+3、完整的GDB调试环境，可以实现内核单步调试
+
+那么，针对以上条件，如果我们想要调试或者参考一个Linux应用程序如何访问到内核的，是否可以完成呢？答案是可以的！
+请看下面！
+
+
+### 4.1 创建简单的APP程序
+
+在`kmodules文件夹`里面新建一个`test.c`内容如下：
+
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+
+unsigned char readbuf[255];
+int count = 0;
+int main(void)
+{
+    int fd ;
+    int retval;
+    printf("hello world!\n");
+    fd = open("./README",O_RDONLY);
+    if ( fd == -1 )
+    {
+        perror( "open dht11 error\n" ) ;
+        exit( -1 ) ;
+    }
+    printf( "open ./README\n" ) ;
+    sleep( 2 ) ;
+    while( 1 )
+    {
+        sleep( 1 ) ;
+        if(count++ == 0)
+        {
+            printf("count=%d\n",count);
+        }
+    }
+    close( fd ) ;
+    return 0;
+}
+
+### 4.2 编译&调试
+
+```
+
+输入编译命令：
+
+```
+aarch64-linux-gnu-gcc test.c -o test
+```
+
+即可在kmodules文件夹下面得到一个新的test应用程序。
+
+接着，按第三节做法进入可单步调试内核的环境。
+
+整体演示效果如下图所示，只是简单的演示，实现从应用层到内核层的调用过程，更深的应用可以继续发掘。
+
+![](images/WSL_Code/app_debug.gif)
+
+
 ## 5.单步调试modules+内核
 
-## 6.单步调试python程序+内核
+
+### 5.1、简单测试代码准备
+
+
+在主机`kmodules文件夹`下新建一个简单的内核模块程序`hello_drv.c`及对应的Makefile文件
+
+* 内核模块程序`hello_drv.c`内容示例：
+
+```
+/*
+* 1  include files
+* 2 __init  module_init()   insmod
+* 3 __exit module_exit()   rmmod
+* 4 GPL BSD Aeplli GPLv2 MIT 
+* 5 module_license(GPL)
+*/
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/device.h>
+
+#include <asm/uaccess.h>
+#include <asm/io.h>
+
+#include <linux/device.h>
+
+
+struct class *hello_class;
+struct device * hello_dev;
+
+int hello_open(struct inode *inode, struct file *flips)
+{
+	printk("--------------%s--------------\n",__FUNCTION__);
+	return 0;
+}
+
+static ssize_t hello_write(struct file *file, const char __user *in,
+		     size_t size, loff_t *off)
+{
+	printk("--------------%s--------------\n",__FUNCTION__);
+	unsigned int buf = 88;
+	copy_from_user(&buf, in ,size );
+	printk("write buf is : %d\n",buf);
+	
+}
+
+static ssize_t hello_read(struct file *file, char __user *buf,
+		    size_t nbytes, loff_t *ppos)
+{
+	
+	printk("--------------%s--------------\n",__FUNCTION__);
+	unsigned int a = 100;
+	copy_to_user(buf,&a,sizeof(int));
+
+
+}
+
+static int my_major = 0;
+const struct file_operations myfops={
+
+	.open = hello_open,
+	.write=  hello_write,
+	.read = hello_read,
+};
+
+
+static int __init hello_init(void)
+{
+	printk("--------------%s--------------\n",__FUNCTION__);//app printf
+	
+	my_major = register_chrdev(0,"hello",&myfops);
+	if(my_major <0)
+	{
+		printk("reg error!\n");
+	}
+	else 
+		printk("my_major =%d",my_major);
+
+	hello_class = class_create(THIS_MODULE,"hello_class");//creat hello_class
+	hello_dev = device_create(hello_class, NULL,MKDEV(my_major,0), NULL, \
+							"hello_dev");//creat hello_dev--->>/dev/hello_dev
+	return 0;
+}
+
+
+static void __exit hello_exit(void)
+{
+	printk("--------------%s--------------\n",__FUNCTION__);
+
+	device_destroy(hello_class,MKDEV(my_major,0));
+
+	class_destroy(hello_class);
+	
+	unregister_chrdev(my_major,"hello");
+}
+
+module_init(hello_init);
+module_exit(hello_exit);
+MODULE_LICENSE("GPL");
+
+```
+
+* 内核模块程序`hello_drv.c`内容示例：
+
+```
+
+ifeq ($(KERNELRELEASE),)
+
+export ARCH=arm64
+export CROSS_COMPILE=aarch64-linux-gnu-
+
+KERNELDIR=/mnt/j/奔跑吧linux内核入门版/最新源码/runninglinuxkernel_4.0-rlk_basic #your kernel dirction
+NFS_DIR=$(KERNELDIR)/kmodules
+
+CUR_DIR := $(shell pwd)
+
+all :
+	make -C  $(KERNELDIR) M=$(CUR_DIR) modules
+	
+install:
+	cp -ranf *.ko   $(NFS_DIR)/
+
+clean :
+	make -C  $(KERNELDIR) M=$(CUR_DIR) clean
+
+.PHONY: modules install  clean
+
+else
+obj-m := hello_drv.o
+endif
+
+```
+
+* 编译
+* 注意，这里的编译应该是在主机环境下，即WSL的命令行中：
+
+```
+make
+```
+
+![](images/WSL_Code/17.png)
+
+### 5.2、开始调试
+
+我们知道当使用`insmod`时，会调用对应的`__init`接口，而在本例中，`hello_init`就为入口函数，因此简单测试一下，在内核中找到`register_chrdev`对应的接口定义，并打好断点，待`insmod`执行之后，观察内核的运行过程。
+
+![](images/WSL_Code/18.png)
+
+* 在内核中打上相应断点：
+
+![](images/WSL_Code/19.png)
+
+![](images/WSL_Code/20.png)
+
+** 演示效果动图： **
+
+
+![](images/WSL_Code/module_debug.gif)
+
 
