@@ -11,11 +11,15 @@
 * [ARM Linux设备树](ARMLinux设备树.md)
 * [手把手教你从单片机移植驱动到ARM Linux上](手把手教你从单片机移植驱动到ARMLinux上.md)
 
+
 ### 搭建最舒适的ARM Linux 应用开发环境
 * [[史上最详细]VS Code搭建ARM Linux Makefile工程IDE（C/C++）]([史上最详细]VSCode搭建ARMLinuxMakefile工程IDE（C-C++）.md)
 
+
 ### 搭建最舒适的ARM Linux 内核开发环境
-* [[首发][纯WIN环境][史上最详细]VSCode搭建Linux Kernel单步调试IDE环境](VSCode搭建LinuxKernel单步调试IDE环境.md)
+* [[首发][纯WIN环境][史上最详细]Win10下VSCode搭建Linux Kernel单步调试IDE环境](VSCode搭建LinuxKernel单步调试IDE环境.md)
+* [[首发][纯Ubuntu][史上最详细]Ubuntu下VSCode搭建Linux Kernel单步调试IDE环境](Ubuntu+VSCode搭建LinuxKernel单步调试IDE环境.md)
+
 
 ### LeezPi-RK3399开发板试用
 * [LeezPi-RK3399_开箱](LeezPi-RK3399_开箱.md)

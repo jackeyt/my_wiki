@@ -1,47 +1,43 @@
-# [首发][史上最详细][纯WIN10环境]VSCode搭建Linux Kernel单步调试IDE环境
-
+# [首发][史上最详细][Ubuntu]VSCode搭建Linux Kernel单步调试IDE环境
 
 [TOC]
 
+继上一篇介绍纯Win10环境下的[[首发][纯WIN环境][史上最详细]Win10下VSCode搭建Linux Kernel单步调试IDE环境](VSCode搭建LinuxKernel单步调试IDE环境.md)   本篇继续介绍在纯Ubuntu下利用VSCode搭建Linux Kernel单步调试IDE环境
+
+
 ## 0.环境介绍
-> 主机：Windows10
 
-> 版本:Windows10专业版
+#### 0.0 主机版本
+> 主机：Ubuntu（其他任意Linux发行版、虚拟机、真机均可）
 
-> 版本号:1909
+> 版本:18.04.4
 
-> 安装日期:2019/10/16
+> 编译器：aarch64-linux-gnu-gcc (gcc version 5.5.0)
 
-> 操作系统版本18363900
+> 调试器：主机：aarch64-linux-gnu-gdb (gcc version 5.5.0)
 
-> WSL版本：WSL1（或者2）ubuntu18.04
-
-> 编译器：aarch64-linux-gnu-gcc (gcc version 7.3.0)
-
-> 调试器：主机：aarch64-linux-gnu-gdb (gcc version 7.3.0)    开发板：gdbserver(7.3.0)
-
-#### VS Code版本
+#### 0.1 VS Code版本
 
 ```
-版本: 1.46.1 (user setup)
+版本: 1.46.1
 提交: cd9ea6488829f560dc949a8b2fb789f3cdc05f5d
-日期: 2020-06-17T21:13:20.174Z
+日期: 2020-06-17T21:13:08.304Z
 Electron: 7.3.1
 Chrome: 78.0.3904.130
 Node.js: 12.8.1
 V8: 7.8.279.23-electron.0
-OS: Windows_NT x64 10.0.18363
+OS: Linux x64 5.3.0-28-generic
 ```
 
 ## 1.准备工作
 
-### 1.1、安装WSL
+### 1.1、安装Ubuntu
 
-下载安装WSL程序，如本例中提到的：[ubuntu18.04](https://wsldownload.azureedge.net/CanonicalGroupLimited.Ubuntu18.04onWindows_1804.2018.817.0_x64__79rhkp1fndgsc.Appx)
+下载安装Ubuntu，如本例中提到的：[ubuntu18.04](https://mirrors.aliyun.com/ubuntu-releases/bionic/ubuntu-18.04.4-desktop-amd64.iso)
 
 ### 1.2、安装VSCode
 
-Windows版的VSCode，[下载地址](https://code.visualstudio.com/Download#)
+Ubuntu版的VSCode：[下载地址](https://vscode.cdn.azure.cn/stable/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/code_1.46.1-1592428892_amd64.deb)
 
 ### 1.3、安装VSCode插件
 
@@ -50,17 +46,17 @@ Windows版的VSCode，[下载地址](https://code.visualstudio.com/Download#)
 * C/C++ (必选)
 * C/C++ Intellisense(可选)
 * C/C++ Snippets(可选)
-> Remote(必选三件套，微软官方出品)
-> 
+Remote Development(必选三件套，微软官方出品)
 * Remote-WSL
 * Remote-SSH
 * Remote-Containers
-> Embedded Linux Dev(设备树插件)
-> Kconfig(设备树插件依赖)
+设备树插件
+* Embedded Linux Dev
+* Kconfig(设备树插件依赖)
 
 ### 1.4、下载Linux内核代码
 
-推荐下载：https://github.com/figozhang/runninglinuxkernel_4.0
+推荐下载：`git clone https://e.coding.net/benshushu/runninglinuxkernel_4.0.git -b rlk_basic`
 
 推荐理由：
 
@@ -71,20 +67,19 @@ Windows版的VSCode，[下载地址](https://code.visualstudio.com/Download#)
 
 ### 1.5、搭建Linux内核编译环境
 
-> Ubuntu18.04(WSL)相关问题可直接百度查找
+> Ubuntu18.04相关问题可直接百度查找
 
-* Linux环境：ubuntu18.04 (WSL)
+* Linux环境：ubuntu18.04
 * Linux安装依赖包：
 
-```
-    sudo apt-get install libncurses5-dev libssl-dev build-essential openssl bison bc flex  git
-```
+
+`sudo apt-get install qemu libncurses5-dev libssl-dev build-essential openssl bison bc flex  git`
+
 
 > 当然你可以使用如下命令来安装编译内核需要的所有依赖包。 
+./run_debian_arm64.sh run
+`sudo apt build-dep linux-image-generic`
 
-```
-    sudo apt build-dep linux-image-generic
-```
 
 * Linux环境安装编译链：
 > 因为linux 内核版本原因，因为所用版本为4.0，所以需要5.x的gcc交叉链
@@ -95,64 +90,54 @@ Windows版的VSCode，[下载地址](https://code.visualstudio.com/Download#)
 
 > 如果系统中已经有其他版本的gcc交叉链，可使用`update-alternatives`进行管理,可以参考：
 
-	update-alternatives 命令的主要参数如下
-    update-alternatives --install <link> <name> <path> <priority> 
-    link：指向/etc/alternatives/<name>的符号引用 
-    name：链接的名称 
-    path：这个命令对应的可执行文件的实际路径 
-    priority：优先级，在 auto 模式下，数字大的优先级比较高。
+```
+update-alternatives 命令的主要参数如下
+update-alternatives --install <link> <name> <path> <priority> 
+link：指向/etc/alternatives/<name>的符号引用 
+name：链接的名称 
+path：这个命令对应的可执行文件的实际路径 
+priority：优先级，在 auto 模式下，数字大的优先级比较高。
+
+```
+
+## 2.Ubuntu下VSCode搭建IDE
+
+* 到这里我们已经完成了Ubuntu、VScode及其插件的安装，接下来可以使用VSCode进行编译、调试
 
 
-## 2.VSCode+WSL搭建IDE
+### 2.1、使用VSCode打开内核源码
+![](images/Ubuntu_Code/1.gif)
 
-* 到这里我们已经完成了WSL、VScode及其插件的安装，接下来可以使用VSCode和WSL进行编译、调试
-
-### 2.1、使用VSCode连接WSL
-![](images/WSL_Code/1.png)
-
-![](images/WSL_Code/2.png)
-
-![](images/WSL_Code/3.png)
 
 ### 2.2、开始编译内核
 
 * 其实该源码目录已经集成好编译、运行、调试所需要的脚本
 * 该源码已经支持ARM32+debian或ARM64+debian，本例以为ARM64+Debian为例
 
-在终端中运行：
+在VSCode中按下`Ctrl+~`即可调出系统终端，在终端中运行：
 
-```
-	./run_debian_arm64.sh build_kernel
-```
+`./run_debian_arm64.sh build_kernel`
 
-![](images/WSL_Code/4.png)
+![](images/Ubuntu_Code/2.png)
 
 * 编译完成：
 
-![](images/WSL_Code/5.png)
+![](images/Ubuntu_Code/3.png)
 
 ### 2.3、编译Rootfs
 
 * 编译 ARM64 版本的Debian 系统 rootfs 
 
-```
-    $sudo ./run_debian_arm64.sh build_rootfs 
-```
+`$sudo ./run_debian_arm64.sh build_rootfs`
 
 * 注意：这里需要使用 root 权限。 
-* 编译完成后会生成一个 rootfs_debian_arm64.ext4 的文件系统。 
-* 注意：在WSL1下，有两个BUG：1、无法mount 2、无法生成ext4镜像，如下图所示，该BUG在WLS2中可以解决。
+* 编译完成后会生成一个 `rootfs_debian_arm64.ext4` 的文件系统。 
 
-![](images/WSL_Code/6.png)
-
-
-* 所以，WSL1版本的环境，可以在虚拟机VM或者其他环境下自行打包，或者可以使用打包好的ARM64_Rootfs.ext4,点击下载。
 
 ### 2.4、运行Rootfs
 
-```
-$ ./run_debian_arm64.sh run 
-```
+`$ ./run_debian_arm64.sh run`
+
 
 * 注意：运行此命令不需要 root 权限。
 
@@ -161,23 +146,25 @@ $ ./run_debian_arm64.sh run
 
 * 成功运行之后，如下图所示：
 
-![](images/WSL_Code/7.png)
+![](images/Ubuntu_Code/4.png)
 
 * 成功登录之后，如下图所示：
 
-![](images/WSL_Code/8.png)
+![](images/Ubuntu_Code/5.png)
+
+
 
 ### 2.5、测试Debian系统
 
 因为是基于Debian系统，且网络等都是已经搭建好的，直接可以使用APT等命令进行安装在线包，以下为简单测试：
 
-![](images/WSL_Code/9.png)
+![](images/Ubuntu_Code/6.png)
 
 QEMU 虚拟机可以通过VirtIO-NET 技术来生成一个虚拟的网卡，并且通过 NAT网 络桥接技术和主机进行网络共享。首先使用 ifconfig 命令来检查网络配置。 可以看到生成了一个名为 eth0 的网卡设备，分配的 IP 地址为：`10.0.2.15`。 通过` apt update` 命令来更新 Debian 系统的软件仓库。
 
-![](images/WSL_Code/10.png)
+![](images/Ubuntu_Code/7.png)
 
-![](images/WSL_Code/11.png)
+![](images/Ubuntu_Code/8.png)
 
 ### 2.6、主机和 QEMU 虚拟机之间共享文件
 
@@ -188,18 +175,16 @@ QEMU 虚拟机可以通过VirtIO-NET 技术来生成一个虚拟的网卡，并�
 
 > 效果如下图所示：
 
-![](images/WSL_Code/12.png)
+![](images/Ubuntu_Code/9.png)
 
 
 * 在 kmodules 目录下面新建一个 test.c 文件。 
 
-![](images/WSL_Code/13.png)
+![](images/Ubuntu_Code/10.png)
 
-![](images/WSL_Code/14.png)
-
+![](images/Ubuntu_Code/11.png)
 
 ##### 我们在后续会经常利用这个特性，比如把编译好的内核模块或者内核模 块源代码放入QEMU 虚拟机。
-
 
 ## 3. 一键单步调试内核
 
@@ -211,12 +196,9 @@ QEMU 虚拟机可以通过VirtIO-NET 技术来生成一个虚拟的网卡，并�
 内核的编译调试命令已经全部打包进了脚本文件，感兴趣的童鞋可以去深入了解一下，这里以ARM64为例：
 
 
-```
-./run_debian_arm64.sh run debug
+`./run_debian_arm64.sh run debug`
 
-```
-
-![](images/WSL_Code/15.png)
+![](images/Ubuntu_Code/12.png)
 
 **此时，gdbserver已经在1234端口等待连接！**
 
@@ -226,7 +208,7 @@ QEMU 虚拟机可以通过VirtIO-NET 技术来生成一个虚拟的网卡，并�
 
 如下动图所示：
 
-![](images/WSL_Code/vscode_config.gif)
+![](images/Ubuntu_Code/13.gif)
 
 添加如下配置信息：
 
@@ -249,7 +231,7 @@ QEMU 虚拟机可以通过VirtIO-NET 技术来生成一个虚拟的网卡，并�
             "externalConsole": true,// 调试时是否显示控制台窗口，一般设置为true显示控制台
             "MIMode": "gdb",
             "miDebuggerPath":"/usr/local/bin/aarch64-linux-gnu-gdb",
-            "miDebuggerServerAddress": "192.168.1.111:1234",
+            "miDebuggerServerAddress": "localhost:1234",
             "setupCommands": [
                 {
                     "description": "为 gdb 启用整齐打印",
@@ -262,24 +244,22 @@ QEMU 虚拟机可以通过VirtIO-NET 技术来生成一个虚拟的网卡，并�
 }
 ```
 
-* 注意:192.168.1.111 是本地WIN10的IP也就是WSL的IP
-* 这里有个小小的BUG，必须输入IP地址，不能使用localhost顶替（在其他环境下是可以的）
+* 注意:`localhost`是本地的IP也就是运行qemu的ubuntu的IP，哪个主机运行`./run_debian_arm64.sh run debug`就取该主机的IP，因为此时是同一台主机，所以就填`localhost`
 * gdb路径："miDebuggerPath":"/usr/local/bin/aarch64-linux-gnu-gdb"
-* gdb监听端口："miDebuggerServerAddress": "192.168.1.111:1234",1234与上一小节中的Listen端口一致！
-
+* gdb监听端口："miDebuggerServerAddress": "localhost",1234与上一小节中的Listen端口一致！
 
 ### 3.3、一键调试
 
 经过3.1、3.2的配置已经实现了调试的前置条件，现只需按下F5键就可以实现一键调试了，如下图所示：
 
-![](images/WSL_Code/start_debug.gif)
+![](images/Ubuntu_Code/14.gif)
 
 
 ### 3.4、更多GDB调试技巧
 
 在终端界面栏，切换至调试控制台;输入命令，如：`-exec info registers`，即可查看调试过中的的寄存器
 
-![](images/WSL_Code/16.png)
+![](images/Ubuntu_Code/15.png)
 
 
 ## 4.单步调试应用层+内核
@@ -333,7 +313,10 @@ int main(void)
     return 0;
 }
 
+
+
 ```
+
 
 ### 4.2 编译&调试
 
@@ -342,14 +325,13 @@ int main(void)
 
 `aarch64-linux-gnu-gcc test.c -o test`
 
-
 即可在kmodules文件夹下面得到一个新的test应用程序。
 
 接着，按第三节做法进入可单步调试内核的环境。
 
 整体演示效果如下图所示，只是简单的演示，实现从应用层到内核层的调用过程，更深的应用可以继续发掘。
 
-![](images/WSL_Code/app_debug.gif)
+![](images/Ubuntu_Code/16.gif)
 
 
 ## 5.单步调试modules+内核
@@ -456,7 +438,8 @@ MODULE_LICENSE("GPL");
 
 ```
 
-* 内核模块程序`hello_drv.c`内容示例：
+* 内核模块程序`Makefile`内容示例：
+
 
 ```
 
@@ -465,7 +448,7 @@ ifeq ($(KERNELRELEASE),)
 export ARCH=arm64
 export CROSS_COMPILE=aarch64-linux-gnu-
 
-KERNELDIR=/mnt/j/奔跑吧linux内核入门版/最新源码/runninglinuxkernel_4.0-rlk_basic #your kernel dirction
+KERNELDIR=/home/jackeyt/runninglinuxkernel_4.0-rlk_basic #your kernel dirction
 NFS_DIR=$(KERNELDIR)/kmodules
 
 CUR_DIR := $(shell pwd)
@@ -494,23 +477,21 @@ endif
 make
 ```
 
-![](images/WSL_Code/17.png)
+![](images/Ubuntu_Code/17.png)
 
 ### 5.2、开始调试
 
 我们知道当使用`insmod`时，会调用对应的`__init`接口，而在本例中，`hello_init`就为入口函数，因此简单测试一下，在内核中找到`register_chrdev`对应的接口定义，并打好断点，待`insmod`执行之后，观察内核的运行过程。
 
-![](images/WSL_Code/18.png)
+![](images/Ubuntu_Code/18.png)
 
 * 在内核中打上相应断点：
 
-![](images/WSL_Code/19.png)
+![](images/Ubuntu_Code/19.png)
 
-![](images/WSL_Code/20.png)
+![](images/Ubuntu_Code/20.png)
 
 ** 演示效果动图： **
 
 
-![](images/WSL_Code/module_debug.gif)
-
-
+![](images/Ubuntu_Code/21.gif)
