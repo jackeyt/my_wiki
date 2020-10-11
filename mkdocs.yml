@@ -26,4 +26,8 @@ nav:
   - 0.开箱: RK1808S_AI计算棒—0.开箱.md
   - 1.开发环境搭建: RK1808S_AI计算棒—1.搭建Windows开发环境.md
   - 2.被动模式下mobilenet_v1模型测试: RK1808S_AI计算棒—2.RK1808被动模式下mobilenet_v1模型测试.md
+- HarmonyOS 开发板使用连载:
+  - 0.开箱: HarmonyOS开发板使用连载—0.开箱.md
+
+
   
